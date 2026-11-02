@@ -5,7 +5,8 @@
 [Bb]in/
 [Oo]bj/
 ExportedObj/
-
+bin/
+obj/
 # File di log e temporanei
 *.log
 *.tmp
