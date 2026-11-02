@@ -20,7 +20,7 @@ packages/
 *.userprefs
 *.pidb
 *.suo
-*.slnx
+
 
 # File di compilazione e simboli (lascia intatti i sorgenti .cs)
 *.pdb
