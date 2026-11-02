@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\iengo\\Desktop\\GiocoC#\\LeCronacheDelSigillo\\LeCronacheDelSigillo.csproj": {}
+    "C:\\Users\\iengo\\Desktop\\bossetti\\LeCronacheDelSigillo\\LeCronacheDelSigillo.csproj": {}
   },
   "projects": {
-    "C:\\Users\\iengo\\Desktop\\GiocoC#\\LeCronacheDelSigillo\\LeCronacheDelSigillo.csproj": {
+    "C:\\Users\\iengo\\Desktop\\bossetti\\LeCronacheDelSigillo\\LeCronacheDelSigillo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\iengo\\Desktop\\GiocoC#\\LeCronacheDelSigillo\\LeCronacheDelSigillo.csproj",
+        "projectUniqueName": "C:\\Users\\iengo\\Desktop\\bossetti\\LeCronacheDelSigillo\\LeCronacheDelSigillo.csproj",
         "projectName": "LeCronacheDelSigillo",
-        "projectPath": "C:\\Users\\iengo\\Desktop\\GiocoC#\\LeCronacheDelSigillo\\LeCronacheDelSigillo.csproj",
+        "projectPath": "C:\\Users\\iengo\\Desktop\\bossetti\\LeCronacheDelSigillo\\LeCronacheDelSigillo.csproj",
         "packagesPath": "C:\\Users\\iengo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\iengo\\Desktop\\GiocoC#\\LeCronacheDelSigillo\\obj\\",
+        "outputPath": "C:\\Users\\iengo\\Desktop\\bossetti\\LeCronacheDelSigillo\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
