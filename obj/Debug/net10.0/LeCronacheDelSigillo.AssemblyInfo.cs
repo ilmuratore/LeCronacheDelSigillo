@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LeCronacheDelSigillo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2f9d86527dabc20e7871c1a9585b2873c0e4a50a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f68a0800357e8dc312971e0fc4d12c6d56135bb7")]
 [assembly: System.Reflection.AssemblyProductAttribute("LeCronacheDelSigillo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LeCronacheDelSigillo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
