@@ -57,6 +57,23 @@ class Gioco
         giocatore.MostraScheda();
 
         Console.WriteLine("\n Il viaggio nel regno inizia da un piccolo villaggio ...");
+
+
+        Nemico goblin = new Nemico("Goblin Esploratore", 60,10, 3,2,1,1,1);
+
+        Combattimento combattimento = new Combattimento(giocatore, goblin);
+        bool vittoria = combattimento.Inizia();
+
+        if (vittoria)
+        {
+            Console.WriteLine("Hai protetto il Sigillo dall'attacco del Goblin");
+        }
+        else
+        {
+            Console.WriteLine("Sei stato sconfitto ritorni alla fontana della rigenerazione");
+        }
+ 
+
         Console.WriteLine("Premi INVIO per tornare al menu");
         Console.ReadLine();
         Console.WriteLine();

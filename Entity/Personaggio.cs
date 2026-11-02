@@ -13,14 +13,13 @@ abstract class Personaggio
     protected int armatura;
     protected int magia;
     protected int agilita;
+    private bool difesaAttiva;
 
     protected Personaggio(string nome, int vitaMassima,
         int manaMassimo, int attacco, int difesa, int armatura, int magia, int agilita)
     {
         this.nome = nome;
-        this.vita = vita;
         this.vitaMassima = vitaMassima;
-        this.mana = mana;
         this.manaMassimo = manaMassimo;
         this.attacco = attacco;
         this.difesa = difesa;
@@ -102,4 +101,43 @@ abstract class Personaggio
         }
     }
 
+    public void Attacca(Personaggio bersaglio)
+    {
+        if(!EInVita() || !bersaglio.EInVita())
+        {
+            return;
+        }
+
+        int danno = attacco - bersaglio.difesa - bersaglio.armatura;
+
+        if(danno < 1)
+        {
+            danno = 1;
+        }
+
+        if (bersaglio.difesaAttiva)
+        {
+            danno -= 5;
+
+            if(danno < 0)
+            {
+                danno = 0;
+            }
+            bersaglio.difesaAttiva = false;
+        }
+
+        bersaglio.SubisciDanno(danno);
+        Console.WriteLine($"{nome} attacca {bersaglio.nome} e infligge {danno} danni");
+    }
+
+    public void Difenditi()
+    {
+        if (!EInVita())
+        {
+            return;
+        }
+        difesaAttiva = true;
+        Console.WriteLine($"{nome} si mette in difesa: danni minori al prossimo attacco");
+
+    }
 }
