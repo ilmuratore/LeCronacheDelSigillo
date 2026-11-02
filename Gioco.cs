@@ -58,25 +58,14 @@ class Gioco
 
         Console.WriteLine("\n Il viaggio nel regno inizia da un piccolo villaggio ...");
 
+        EntraVillaggio(giocatore);
 
-        Nemico goblin = new Nemico("Goblin Esploratore", 60,10, 3,2,1,1,1);
+        Console.WriteLine("\n Partita terminata. Premi INVIO per tornare al menu principale");
 
-        Combattimento combattimento = new Combattimento(giocatore, goblin);
-        bool vittoria = combattimento.Inizia();
-
-        if (vittoria)
-        {
-            Console.WriteLine("Hai protetto il Sigillo dall'attacco del Goblin");
-        }
-        else
-        {
-            Console.WriteLine("Sei stato sconfitto ritorni alla fontana della rigenerazione");
-        }
- 
-
-        Console.WriteLine("Premi INVIO per tornare al menu");
         Console.ReadLine();
         Console.WriteLine();
+      
+
     }
 
     private void MostraIstruzioni()
@@ -174,6 +163,70 @@ class Gioco
                 Console.WriteLine("Scelta non valida. Nessun punto distribuito.");
             }
         }
+    }
+
+    private void EntraVillaggio(Giocatore giocatore)
+    {
+        Console.WriteLine("\n Sei arrivato in un villaggio, che si trova ai piedi di antiche rovine");
+        bool nelVillaggio = true;
+
+        while(nelVillaggio && giocatore.EInVita())
+        {
+            MostraMenuVillaggio();
+            switch (Console.ReadLine())
+            {
+                case "1":
+                    giocatore.MostraScheda();
+                    break;
+                case "2":
+                    bool vittoria = AffrontaGoblin(giocatore);
+                    if (!vittoria)
+                    {
+                        nelVillaggio = false;
+                    }
+                    break;
+                case "0":
+                    nelVillaggio = false;
+                    Console.WriteLine("Lasci il villaggio.");
+                    break;
+                default:
+                    Console.WriteLine("Scelta non valida");
+                    break;
+            }
+        }
+    }
+
+
+    private void MostraMenuVillaggio()
+    {
+        Console.WriteLine("\n === VILLAGGIO DI VALDORIA === ");
+        Console.WriteLine("1. Mostra la scheda Personaggio");
+        Console.WriteLine("2. Affronta il Goblin (allenamento )");
+        Console.WriteLine("3. Negozio");
+        Console.WriteLine("4. Missioni");
+        Console.WriteLine("0. Termina la partita");
+        Console.WriteLine("Scelta: ");
+    }
+
+    private bool AffrontaGoblin(Giocatore giocatore)
+    {
+        Nemico goblin = new Nemico("Goblin Esploratore", 60, 10, 9, 3, 1, 1, 1);
+        Combattimento combattimento = new Combattimento(giocatore, goblin);
+
+        bool vittoria = combattimento.Inizia();
+
+        if (vittoria)
+        {
+            Console.WriteLine("Hai protetto il villaggio di Valdoria");
+            Console.WriteLine("I tuoi HP non vengono rigenerati");
+        }
+        else
+        {
+            Console.WriteLine("Il tuo eore é stato sconfitto. Partita terminata");
+            
+        }
+        return vittoria;
+
     }
 }
 
