@@ -18,7 +18,6 @@ abstract class Personaggio
     private int bonusFisicoTemporaneo;
     private int attacchiFisiciRimanenti;
 
-
     protected Personaggio(string nome, int vitaMassima,
         int manaMassimo, int attacco, int difesa, int armatura, int magia, int agilita)
     {

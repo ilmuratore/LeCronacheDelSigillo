@@ -7,9 +7,10 @@ class Giocatore : Personaggio
     private TipoClasse tipoClasse;
     private int puntiDisponibili;
     private int livello;
-
+    private Oggetto? armaEquipaggiata;
+    private Oggetto? armaturaEquipaggiata;
+    private Oggetto? accessorioEquipaggiato;
     private List<Abilita> abilita;
-
     private List<Oggetto> inventario;
 
     public Giocatore(string nome, TipoClasse tipoClasse) 
@@ -25,6 +26,13 @@ class Giocatore : Personaggio
         inventario.Add(new Oggetto("Pozione di mana", TipoOggetto.PozioneMana, 20));
         inventario.Add(new Oggetto("Bomba incendiaria", TipoOggetto.BombaIncendiaria, 12));
         inventario.Add(new Oggetto("Elisir della Forza", TipoOggetto.ElisirForza, 5));
+        inventario.Add(new Oggetto("Spada arruginita", TipoOggetto.Arma, 2,0,0));
+        inventario.Add(new Oggetto("Spada suprema", TipoOggetto.Arma, 10, 0, 0));
+        inventario.Add(new Oggetto("Corazza", TipoOggetto.Armatura, 0, 5, 0));
+        inventario.Add(new Oggetto("Amuleto", TipoOggetto.Accessorio, 0, 0, 10));
+        armaEquipaggiata = null;
+        armaturaEquipaggiata = null;
+        accessorioEquipaggiato = null;
 
         switch (tipoClasse)
         {
@@ -66,7 +74,6 @@ class Giocatore : Personaggio
         MostraStato();
         Console.WriteLine($"Punti abilita da distribuire : {this.puntiDisponibili}");
     }
-    
     public void MostraAbilita()
     {
         Console.WriteLine($"\n === ABILITA DEL {tipoClasse.ToString().ToUpper()} ===");
@@ -75,7 +82,6 @@ class Giocatore : Personaggio
             abilita[i].Mostra(i + 1, livello);
         }
     }
-
     public void MostraInventario()
     {
         Console.WriteLine("\n === INVENTARIO ===");
@@ -89,7 +95,39 @@ class Giocatore : Personaggio
             inventario[i].Mostra(i + 1);
         }
     }
+    public void MostraEquipaggiamento()
+    {
+        Console.WriteLine("\n === EQUIPAGGIAMENTO ===");
+        Console.Write("Arma: ");
+        if (armaEquipaggiata == null)
+        {
+            Console.WriteLine("nessuna");
+        }
+        else
+        {
+            armaEquipaggiata.MostraEquipaggiato();
+        }
+        Console.Write("Armatura: ");
+        if (armaturaEquipaggiata == null)
+        {
+            Console.WriteLine("nessuna");
+        }
+        else
+        {
+            armaturaEquipaggiata.MostraEquipaggiato();
+        }
+        Console.Write("Accessorio: ");
+        if (accessorioEquipaggiato == null)
+        {
+            Console.WriteLine("nessuna");
+        }
+        else
+        {
+            accessorioEquipaggiato.MostraEquipaggiato();
+        }
 
+
+    }
     public bool UsaAbilita(int numero, Personaggio bersaglio, Random casuale)
     {
         if( numero < 1 || numero > abilita.Count)
@@ -99,19 +137,14 @@ class Giocatore : Personaggio
         }
         return abilita[numero - 1].Esegui(this, bersaglio, casuale, livello);
     }
-
-
-    
     public int GetPuntiDisponibili()
     {
         return puntiDisponibili;
     }
-
     public bool HaPuntiDaDistribuire()
     {
         return puntiDisponibili > 0;
     }
-
     public bool AssegnaPunti(int scelta)
     {
         if (!HaPuntiDaDistribuire())
@@ -148,7 +181,6 @@ class Giocatore : Personaggio
         puntiDisponibili--;
         return true;
     }
-
     public bool UsaOggetto(int numero, Nemico nemico)
     {
         if(numero < 1 || numero > inventario.Count)
@@ -164,5 +196,52 @@ class Giocatore : Personaggio
         inventario.RemoveAt(numero - 1);
         return true;
          
+    }
+    public void ModificaBonusEquipaggiamento(int bonusAttacco, int bonusArmatura, int bonusMagia)
+    {
+        attacco += bonusAttacco;
+        armatura += bonusArmatura;
+        magia += bonusMagia;
+    }
+    public bool Equipaggia(int numero)
+    {
+        if (numero < 1 || numero > inventario.Count)
+        {
+            Console.WriteLine("Numero oggetto non valido");
+            return false;
+        }
+        Oggetto nuovo = inventario[numero - 1];
+        if (!nuovo.EEquipaggiabile())
+        {
+            Console.WriteLine("Questo oggetto é un consumabile, non é possibile equipaggiarlo");
+            return false;
+        }
+        Oggetto? precedente = null;
+        if (nuovo.EPerSlot(TipoOggetto.Arma))
+        {
+            precedente = armaEquipaggiata;
+            armaEquipaggiata = nuovo;
+        }
+        else if (nuovo.EPerSlot(TipoOggetto.Armatura))
+        {
+            precedente = armaturaEquipaggiata;
+            armaturaEquipaggiata = nuovo;
+        }
+        else if (nuovo.EPerSlot(TipoOggetto.Accessorio))
+        {
+            precedente = accessorioEquipaggiato;
+            accessorioEquipaggiato = nuovo;
+        }
+
+        inventario.RemoveAt(numero - 1);
+        if (precedente != null)
+        {
+            precedente.ApplicaBonus(this, false);
+            inventario.Add(precedente);
+        }
+
+        nuovo.ApplicaBonus(this, true);
+        Console.WriteLine("Equipaggiamento aggiornato");
+        return true;
     }
 }

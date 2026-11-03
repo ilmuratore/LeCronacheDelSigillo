@@ -10,7 +10,6 @@ class Nemico : Personaggio
         mana = manaMassimo;
     }
                                                                                                                                             
-
     public void Presentati()
     {
         Console.WriteLine($"\n Un nemico appare: {this.nome} !");

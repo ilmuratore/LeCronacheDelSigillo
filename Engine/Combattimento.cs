@@ -82,7 +82,6 @@ class Combattimento
         return vittoria;
     }
 
-
     private bool ScegliAbilita()
     {
         giocatore.MostraAbilita();

@@ -187,6 +187,10 @@ class Gioco
                     break;
                 case "5":
                     giocatore.MostraInventario();
+                    giocatore.MostraEquipaggiamento();
+                    break;
+                case "6":
+                    EquipaggiaDalVillaggio(giocatore);
                     break;
                 case "0":
                     nelVillaggio = false;
@@ -207,7 +211,8 @@ class Gioco
         Console.WriteLine("2. Affronta il Goblin (allenamento )");
         Console.WriteLine("3. Negozio");
         Console.WriteLine("4. Missioni");
-        Console.WriteLine("5. Inventario");
+        Console.WriteLine("5. Inventario e Equipaggiamento");
+        Console.WriteLine("6. Equipaggia un oggetto");
         Console.WriteLine("0. Termina la partita");
         Console.WriteLine("Scelta: ");
     }
@@ -231,6 +236,32 @@ class Gioco
         }
         return vittoria;
 
+    }
+
+    private void EquipaggiaDalVillaggio(Giocatore giocatore)
+    {
+        giocatore.MostraInventario();
+        giocatore.MostraEquipaggiamento();
+        Console.WriteLine("0. Annulla");
+        Console.WriteLine("Numero dell'oggetto da equipaggiare: ");
+
+        string? risposta = Console.ReadLine();
+        if(!int.TryParse(risposta, out int numero))
+        {
+            Console.WriteLine("Devi inserire un numero.");
+            return;
+        }
+        if (numero == 0)
+        {
+            Console.WriteLine("Nessuna modifica.");
+            return;
+        }
+        if (giocatore.Equipaggia(numero))
+        {
+            giocatore.MostraEquipaggiamento();
+            Console.WriteLine("Statistiche aggiornate");
+            giocatore.MostraScheda();
+        }
     }
 }
 

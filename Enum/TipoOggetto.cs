@@ -3,6 +3,8 @@
     PozioneVita,
     PozioneMana,
     BombaIncendiaria,
-    ElisirForza
-
+    ElisirForza,
+    Arma,
+    Armatura,
+    Accessorio
 }

@@ -11,7 +11,6 @@ class Abilita
     private int durataEffetto;
     private int probabilitaEffetto;
 
-
     public Abilita(string nome, int costoMana, int livelloRichiesto, int bonusDanno, bool magica, 
         TipoEffetto effetto, int durataEffetto, int probabilitaEffetto)
     {

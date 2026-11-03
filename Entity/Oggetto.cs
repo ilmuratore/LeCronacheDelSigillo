@@ -5,35 +5,59 @@ class Oggetto
     private string nome;
     private TipoOggetto tipo;
     private int potenza;
+    private int bonusAttacco;
+    private int bonusArmatura;
+    private int bonusMagia;
 
     public Oggetto(string nome, TipoOggetto tipo, int potenza)
     {
         this.nome = nome;
         this.tipo = tipo;
         this.potenza = potenza;
+        bonusAttacco = 0;
+        bonusArmatura = 0;
+        bonusMagia = 0;
+    }
+    public Oggetto(string nome, TipoOggetto tipo, int bonusAttacco, int bonusArmatura, int bonusMagia)
+    {
+        this.nome = nome;
+        this.tipo = tipo;
+        this.potenza = 0;
+        this.bonusAttacco = bonusAttacco;
+        this.bonusArmatura = bonusArmatura;
+        this.bonusMagia = bonusMagia;
     }
 
     public void Mostra(int numero)
     {
-        string descrizione = "";
+        Console.WriteLine($"{numero}. {nome} ({Descrizione()})");
+    }
+    public void MostraEquipaggiato()
+    {
+        Console.WriteLine($"{nome} ({Descrizione()})");
+    }
+    private string Descrizione()
+    {
         switch (tipo)
         {
             case TipoOggetto.PozioneVita:
-                descrizione = $"+ {potenza} HP";
-                break;
+                return $"+ {potenza} HP";
             case TipoOggetto.PozioneMana:
-                descrizione = $"+ {potenza} MP";
-                break;
+                return $"+ {potenza} MP";
             case TipoOggetto.BombaIncendiaria:
-                descrizione = $"{potenza} danni diretti + bruciatura";
-                break;
+                return $"{potenza} danni diretti + bruciatura";
             case TipoOggetto.ElisirForza:
-                descrizione = $"+ {potenza} a 2 attacchi fisici";
-                break;
+                return $"+ {potenza} a 2 attacchi fisici";
+            case TipoOggetto.Arma:
+                return $"+ {bonusAttacco} Attacco";
+            case TipoOggetto.Armatura:
+                return $"+ {bonusArmatura} Armatura";
+            case TipoOggetto.Accessorio:
+                return $"+ {bonusMagia} Magia";
+            default:
+                return "tipo sconosciuto";
         }
-        Console.WriteLine($"{numero}. {nome} ({descrizione})");
     }
-
     public bool Usa(Giocatore giocatore, Nemico nemico)
     {
         switch (tipo)
@@ -76,7 +100,33 @@ class Oggetto
                 }
                 Console.WriteLine($"Usi {nome}, per i prossimi due attacchi + {potenza} danno.");
                 return true;
+            case TipoOggetto.Arma:
+            case TipoOggetto.Armatura:
+            case TipoOggetto.Accessorio:
+                Console.WriteLine("Questo oggetto si equipaggia nel villaggio. Azione non consentita");
+                return false;
         }
         return false;
+    }
+    public bool EEquipaggiabile()
+    {
+        return tipo == TipoOggetto.Arma || tipo == TipoOggetto.Armatura || tipo == TipoOggetto.Accessorio;
+    }
+    public bool EPerSlot(TipoOggetto slot)
+    {
+        return EEquipaggiabile() && tipo == slot;
+    }
+    public void ApplicaBonus(Giocatore giocatore, bool equipaggia)
+    {
+        if (!EEquipaggiabile())
+        {
+            return;
+        }
+        int segno = -1;
+        if (equipaggia)
+        {
+            segno = 1;
+        }
+        giocatore.ModificaBonusEquipaggiamento(bonusAttacco * segno, bonusArmatura * segno, bonusMagia * segno);
     }
 }
