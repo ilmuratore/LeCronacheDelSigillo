@@ -4,18 +4,25 @@ class Combattimento
 {
     private Giocatore giocatore;
     private Nemico nemico;
-
     private Random casuale;
+    private bool terminato;
 
     public Combattimento(Giocatore giocatore, Nemico nemico)
     {
         this.giocatore = giocatore;
         this.nemico = nemico;
         casuale = new Random();
+        terminato = false;
     }
 
     public bool Inizia()
     {
+        if (terminato)
+        {
+            Console.WriteLine("Questo combattimento é gia terminato");
+            return false;
+        }
+
         nemico.Presentati();
 
         while (giocatore.EInVita() && nemico.EInVita())
@@ -77,8 +84,10 @@ class Combattimento
         }
 
         bool vittoria = giocatore.EInVita();
+        terminato = true;
         giocatore.TerminaCombattimento();
         nemico.TerminaCombattimento();
+        AssegnaRicompnese();
         return vittoria;
     }
 
@@ -122,5 +131,21 @@ class Combattimento
             return false;
         }
         return giocatore.UsaOggetto(numero, nemico);
+    }
+
+    private void AssegnaRicompnese()
+    {
+        Console.WriteLine("\n === RICOMPENSE ===");
+        giocatore.RiceviMonete(nemico.LeggiMoneteRicompensa());
+
+        Oggetto? trovato = nemico.EstraiOggetti(casuale);
+        if(trovato == null)
+        {
+            Console.WriteLine("Non hai trovato oggetti");
+        }
+        else
+        {
+            giocatore.RiceviOggetti(trovato);
+        }
     }
 }

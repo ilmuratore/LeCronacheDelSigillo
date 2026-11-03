@@ -2,14 +2,39 @@
 
 class Nemico : Personaggio
 {
+    private int moneteRicompensa;
+
     public Nemico(string nome, int vitaMassima, int manaMassimo, int attacco, int difesa, 
                     int armatura, int magia, int agilita) 
         : base(nome, vitaMassima, manaMassimo, attacco, difesa, armatura, magia, agilita)
     {
         vita = vitaMassima;
         mana = manaMassimo;
+        moneteRicompensa = 12;
     }
-                                                                                                                                            
+    public int LeggiMoneteRicompensa()
+    {
+        return moneteRicompensa;
+    }
+
+    public Oggetto? EstraiOggetti(Random casuale)
+    {
+        int tiro = casuale.Next(0, 100);
+        if (tiro < 30)
+        {
+            return new Oggetto("Pozione di salute", TipoOggetto.PozioneVita, 30, 15);
+        }
+        if (tiro < 45)
+        {
+            return new Oggetto("Pozione di mana", TipoOggetto.PozioneMana, 20, 15);
+        }
+        if (tiro < 50)
+        {
+            return new Oggetto("Bomba incendiaria", TipoOggetto.BombaIncendiaria, 12, 22);
+        }
+        return null;
+    }
+
     public void Presentati()
     {
         Console.WriteLine($"\n Un nemico appare: {this.nome} !");

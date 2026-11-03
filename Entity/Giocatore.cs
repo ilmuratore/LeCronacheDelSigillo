@@ -261,5 +261,21 @@ class Giocatore : Personaggio
         return true;
     }
 
+    public void RiceviMonete(int quantita)
+    {
+        if(quantita <= 0)
+        {
+            return;
+        }
+        monete += quantita;
+        Console.WriteLine($"Ottieni {quantita} monete");
+        MostraMonete();
+    }
 
+    public void RiceviOggetti(Oggetto oggetto)
+    {
+        inventario.Add(oggetto);
+        Console.WriteLine("Hai trovato un oggetto: ");
+        oggetto.Mostra(inventario.Count);
+    }
 }
