@@ -14,8 +14,6 @@ class Giocatore : Personaggio
     {
         this.tipoClasse = tipoClasse;
         puntiDisponibili = 5;
-        vita = vitaMassima;
-        mana = manaMassimo;
         livello = 1;
         abilita = new List<Abilita>();
         switch (tipoClasse)
@@ -46,6 +44,9 @@ class Giocatore : Personaggio
                 abilita.Add(new Abilita("Furtivo", 25, 3, 18, false));
                 break;
         }
+
+        vita = vitaMassima;
+        mana = manaMassimo;
     }
 
     public void MostraScheda()
