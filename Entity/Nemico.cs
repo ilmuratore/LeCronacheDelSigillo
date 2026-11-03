@@ -17,5 +17,26 @@ class Nemico : Personaggio
         Console.WriteLine("Si prepara a combattere");
     }
 
+    public void EseguiTurno(Giocatore giocatore, Random casuale)
+    {
+        if(!EInVita() || !giocatore.EInVita())
+        {
+            return;
+        }
+
+        int sogliaSalute = vitaMassima * 30 / 100;
+
+        if (vita <= sogliaSalute && casuale.Next(0, 100) < 50)
+        {
+            Console.WriteLine($"{nome} é ferito e prova a difendersi");
+            Difenditi();
+        }
+        else
+        {
+            Attacca(giocatore, casuale);
+        }
+    }
+
+   
 
 }

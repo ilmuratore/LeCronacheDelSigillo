@@ -101,18 +101,53 @@ abstract class Personaggio
         }
     }
 
-    public void Attacca(Personaggio bersaglio)
+    public void Attacca(Personaggio bersaglio, Random casuale)
     {
         if(!EInVita() || !bersaglio.EInVita())
         {
             return;
         }
 
+        int probabilitaSchivata = bersaglio.agilita;
+
+        if(probabilitaSchivata < 0)
+        {
+            probabilitaSchivata = 0;
+        }
+        if( probabilitaSchivata > 30)
+        {
+            probabilitaSchivata = 30;
+        }
+
+        if(casuale.Next(0, 100) < probabilitaSchivata)
+        {
+            Console.WriteLine($"{bersaglio.nome} schiva l'attacco di {nome} !");
+            return;
+        }
+
+        int probabilitaCritico = 5 + agilita;
+
+        if( probabilitaCritico < 0)
+        {
+            probabilitaCritico = 0;
+        }
+        if(probabilitaCritico > 35)
+        {
+            probabilitaCritico = 35;
+        }
+
+        bool critico = casuale.Next(0, 100) < probabilitaCritico;
+
         int danno = attacco - bersaglio.difesa - bersaglio.armatura;
 
         if(danno < 1)
         {
             danno = 1;
+        }
+        if (critico)
+        {
+            danno *= 2;
+            Console.WriteLine($"Colpo CRITICO di {nome} , {danno}  danni inflitti!");
         }
 
         if (bersaglio.difesaAttiva)

@@ -5,10 +5,13 @@ class Combattimento
     private Giocatore giocatore;
     private Nemico nemico;
 
+    private Random casuale;
+
     public Combattimento(Giocatore giocatore, Nemico nemico)
     {
         this.giocatore = giocatore;
         this.nemico = nemico;
+        casuale = new Random();
     }
 
     public bool Inizia()
@@ -28,7 +31,7 @@ class Combattimento
             switch (Console.ReadLine())
             {
                 case "1":
-                    giocatore.Attacca(nemico);
+                    giocatore.Attacca(nemico, casuale);
                     break;
                 case "2":
                     giocatore.Difenditi();
@@ -41,7 +44,7 @@ class Combattimento
             if (nemico.EInVita())
             {
                 Console.WriteLine("\n === TURNO DEL NEMICO ===");
-                nemico.Attacca(giocatore);
+                nemico.EseguiTurno(giocatore, casuale);
             }
         }
 
