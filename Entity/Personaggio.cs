@@ -15,6 +15,8 @@ abstract class Personaggio
     protected int agilita;
     private bool difesaAttiva;
     private List<EffettoStato> effetti;
+    private int bonusFisicoTemporaneo;
+    private int attacchiFisiciRimanenti;
 
 
     protected Personaggio(string nome, int vitaMassima,
@@ -29,6 +31,8 @@ abstract class Personaggio
         this.magia = magia;
         this.agilita = agilita;
         effetti = new List<EffettoStato>();
+        bonusFisicoTemporaneo = 0;
+        attacchiFisiciRimanenti = 0;
     }
 
     public void MostraStato()
@@ -44,6 +48,10 @@ abstract class Personaggio
         for(int i = 0; i < effetti.Count; i++)
         {
             effetti[i].Mostra();
+        }
+        if(attacchiFisiciRimanenti > 0)
+        {
+            Console.WriteLine($"Elisir forza: + {bonusFisicoTemporaneo} per {attacchiFisiciRimanenti} attacchi fisici ");
         }
     }
 
@@ -110,7 +118,12 @@ abstract class Personaggio
 
     public void Attacca(Personaggio bersaglio, Random casuale)
     {
-        EseguiAttacco(bersaglio, casuale, attacco);
+        if(!EInVita() || !bersaglio.EInVita())
+        {
+            return;
+        }
+        int potenza = attacco + ConsumaBonusFisico();
+        EseguiAttacco(bersaglio, casuale, potenza);
     }
 
     public bool AttaccaConAbilita(Personaggio bersaglio, Random casuale, string nomeAbilita, int costoMana, int bonusDanno, 
@@ -123,7 +136,7 @@ abstract class Personaggio
 
         if (!ConsumaMana(costoMana))
         {
-            Console.WriteLine("Mana insufficiente: 'l'abilitá non viene lanciata");
+            Console.WriteLine("Mana insufficiente: l'abilitá non viene lanciata");
             return false;
         }
         int potenza = attacco;
@@ -133,6 +146,10 @@ abstract class Personaggio
         }
 
         potenza += bonusDanno;
+        if (!usaMagia)
+        {
+            potenza += ConsumaBonusFisico();
+        }
         int danno = EseguiAttacco(bersaglio, casuale, potenza);
         if( danno > 0 && bersaglio.EInVita() && tipoEffetto != TipoEffetto.Nessuno && casuale.Next(0,100) < probabilitáEffetto)
         {
@@ -262,4 +279,41 @@ abstract class Personaggio
         effetti.Clear();
         difesaAttiva = false;
     }
+
+    public bool PuoCurarsi()
+    {
+        return EInVita() && vita < vitaMassima;
+    }
+    
+    public bool PuoRecuperareMana()
+    {
+        return EInVita() && mana < manaMassimo;
+    }
+
+    public bool AttivaBonusFisico(int bonus, int numeroAttacchi)
+    {
+        if(!EInVita() || bonus <= 0 || numeroAttacchi <= 0 || attacchiFisiciRimanenti > 0)
+        {
+            return false;
+        }
+
+        bonusFisicoTemporaneo = bonus;
+        attacchiFisiciRimanenti = numeroAttacchi;
+        return true;
+    }
+    private int ConsumaBonusFisico()
+    {
+        if(attacchiFisiciRimanenti <= 0)
+        {
+            return 0;
+        }
+        int bonus = bonusFisicoTemporaneo;
+        attacchiFisiciRimanenti--;
+        if(attacchiFisiciRimanenti == 0)
+        {
+            bonusFisicoTemporaneo = 0;
+        }
+        return bonus;
+    }
+
 }

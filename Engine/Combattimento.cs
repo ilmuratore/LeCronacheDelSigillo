@@ -38,6 +38,7 @@ class Combattimento
                     Console.WriteLine("\n1. Attacca");
                     Console.WriteLine("2. Difenditi");
                     Console.WriteLine("3. Abilitá speciale");
+                    Console.WriteLine("4. Inventario");
                     Console.WriteLine("Scelta: ");
 
                     switch (Console.ReadLine())
@@ -52,6 +53,9 @@ class Combattimento
                             break;
                         case "3":
                             azioneCompletata = ScegliAbilita();
+                            break;
+                        case "4":
+                            azioneCompletata = ScegliOggetto();
                             break;
                         default:
                             Console.WriteLine("Azione non valida.");
@@ -99,5 +103,25 @@ class Combattimento
                 return false;
 
         }
+    }
+
+    private bool ScegliOggetto()
+    {
+        giocatore.MostraInventario();
+        Console.WriteLine("0. Torna alle azioni");
+        Console.WriteLine("Scelta oggetto: ");
+
+        string? risposta = Console.ReadLine();
+        if(!int.TryParse(risposta, out int numero))
+        {
+            Console.WriteLine("Devi inserire un numero.");
+            return false;
+        }
+        if( numero == 0)
+        {
+            Console.WriteLine("Torni al menu precedente.");
+            return false;
+        }
+        return giocatore.UsaOggetto(numero, nemico);
     }
 }

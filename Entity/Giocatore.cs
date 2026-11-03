@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices.Marshalling;
 
 
 class Giocatore : Personaggio
@@ -9,6 +10,8 @@ class Giocatore : Personaggio
 
     private List<Abilita> abilita;
 
+    private List<Oggetto> inventario;
+
     public Giocatore(string nome, TipoClasse tipoClasse) 
         : base(nome, 80,30,10,5,2,5,5)
     {
@@ -16,6 +19,13 @@ class Giocatore : Personaggio
         puntiDisponibili = 5;
         livello = 1;
         abilita = new List<Abilita>();
+        inventario = new List<Oggetto>();
+        inventario.Add(new Oggetto("Pozione di salute", TipoOggetto.PozioneVita, 30));
+        inventario.Add(new Oggetto("Pozione di salute", TipoOggetto.PozioneVita, 30));
+        inventario.Add(new Oggetto("Pozione di mana", TipoOggetto.PozioneMana, 20));
+        inventario.Add(new Oggetto("Bomba incendiaria", TipoOggetto.BombaIncendiaria, 12));
+        inventario.Add(new Oggetto("Elisir della Forza", TipoOggetto.ElisirForza, 5));
+
         switch (tipoClasse)
         {
             case TipoClasse.Guerriero:
@@ -63,6 +73,20 @@ class Giocatore : Personaggio
         for(int i = 0; i < abilita.Count; i++)
         {
             abilita[i].Mostra(i + 1, livello);
+        }
+    }
+
+    public void MostraInventario()
+    {
+        Console.WriteLine("\n === INVENTARIO ===");
+        if(inventario.Count == 0)
+        {
+            Console.WriteLine("Inventario vuoto");
+            return;
+        }
+        for (int i = 0; i < inventario.Count; i++)
+        {
+            inventario[i].Mostra(i + 1);
         }
     }
 
@@ -125,5 +149,20 @@ class Giocatore : Personaggio
         return true;
     }
 
-    
+    public bool UsaOggetto(int numero, Nemico nemico)
+    {
+        if(numero < 1 || numero > inventario.Count)
+        {
+            Console.WriteLine("Numero oggetto non valido.");
+            return false;
+        }
+        Oggetto oggetto = inventario[numero - 1];
+        if (!oggetto.Usa(this, nemico))
+        {
+            return false;
+        }
+        inventario.RemoveAt(numero - 1);
+        return true;
+         
+    }
 }

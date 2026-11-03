@@ -185,6 +185,9 @@ class Gioco
                         nelVillaggio = false;
                     }
                     break;
+                case "5":
+                    giocatore.MostraInventario();
+                    break;
                 case "0":
                     nelVillaggio = false;
                     Console.WriteLine("Lasci il villaggio.");
@@ -204,6 +207,7 @@ class Gioco
         Console.WriteLine("2. Affronta il Goblin (allenamento )");
         Console.WriteLine("3. Negozio");
         Console.WriteLine("4. Missioni");
+        Console.WriteLine("5. Inventario");
         Console.WriteLine("0. Termina la partita");
         Console.WriteLine("Scelta: ");
     }
