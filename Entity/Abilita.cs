@@ -7,14 +7,22 @@ class Abilita
     private int livelloRichiesto;
     private int bonusDanno;
     private bool magica;
+    private TipoEffetto effetto;
+    private int durataEffetto;
+    private int probabilitaEffetto;
 
-    public Abilita(string nome, int costoMana, int livelloRichiesto, int bonusDanno, bool magica)
+
+    public Abilita(string nome, int costoMana, int livelloRichiesto, int bonusDanno, bool magica, 
+        TipoEffetto effetto, int durataEffetto, int probabilitaEffetto)
     {
         this.nome = nome;
         this.costoMana = costoMana;
         this.livelloRichiesto = livelloRichiesto;
         this.bonusDanno = bonusDanno;
         this.magica = magica;
+        this.effetto = effetto;
+        this.durataEffetto = durataEffetto;
+        this.probabilitaEffetto = probabilitaEffetto;
 
     }
 
@@ -28,6 +36,11 @@ class Abilita
 
         Console.WriteLine($"{numero} {nome} | {costoMana} MP | bonus {bonusDanno} ({tipo})");
         
+        if(effetto != TipoEffetto.Nessuno)
+        {
+            Console.WriteLine($" | {probabilitaEffetto} % | {effetto} ({durataEffetto} turni)");
+        }
+
         if(livelloGiocatore < livelloRichiesto)
         {
             Console.WriteLine($" | BLOCCATI: livello:  {livelloRichiesto}");
@@ -43,7 +56,7 @@ class Abilita
             Console.WriteLine($"Abilitá bloccata: livello minimo : {livelloRichiesto}");
             return false;
         }
-        return giocatore.AttaccaConAbilita(bersaglio, casuale, nome, costoMana, bonusDanno, magica);
+        return giocatore.AttaccaConAbilita(bersaglio, casuale, nome, costoMana, bonusDanno, magica, effetto, durataEffetto, probabilitaEffetto);
 
     }
 }

@@ -31,6 +31,15 @@ class Nemico : Personaggio
             Console.WriteLine($"{nome} é ferito e prova a difendersi");
             Difenditi();
         }
+        else if(casuale.Next(0, 100) < 25)
+        {
+            Console.WriteLine($"{nome} tenta un attacco con pugnale avvelenato");
+            int danno = EseguiAttacco(giocatore, casuale, attacco);
+            if( danno > 0 && giocatore.EInVita())
+            {
+                giocatore.ApplicaEffetto(TipoEffetto.Veleno, 2);
+            }
+        }
         else
         {
             Attacca(giocatore, casuale);

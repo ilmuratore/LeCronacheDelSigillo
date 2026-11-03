@@ -113,7 +113,8 @@ abstract class Personaggio
         EseguiAttacco(bersaglio, casuale, attacco);
     }
 
-    public bool AttaccaConAbilita(Personaggio bersaglio, Random casuale, string nomeAbilita, int costoMana, int bonusDanno, bool usaMagia)
+    public bool AttaccaConAbilita(Personaggio bersaglio, Random casuale, string nomeAbilita, int costoMana, int bonusDanno, 
+        bool usaMagia,TipoEffetto tipoEffetto, int durataEffetto, int probabilitáEffetto)
     {
         if (!EInVita() || !bersaglio.EInVita())
         {
@@ -132,16 +133,20 @@ abstract class Personaggio
         }
 
         potenza += bonusDanno;
+        int danno = EseguiAttacco(bersaglio, casuale, potenza);
+        if( danno > 0 && bersaglio.EInVita() && tipoEffetto != TipoEffetto.Nessuno && casuale.Next(0,100) < probabilitáEffetto)
+        {
+            bersaglio.ApplicaEffetto(tipoEffetto, durataEffetto);
+        }
         Console.WriteLine($"{nome} usa {nomeAbilita} ! ( - {costoMana} MP )");
-        EseguiAttacco(bersaglio, casuale, potenza);
         return true;
     }
 
-    private void EseguiAttacco(Personaggio bersaglio, Random casuale, int potenza)
+    protected int EseguiAttacco(Personaggio bersaglio, Random casuale, int potenza)
     {
         if (!EInVita() || !bersaglio.EInVita())
         {
-            return;
+            return 0;
         }
 
         int probabilitaSchivata = bersaglio.agilita;
@@ -158,7 +163,7 @@ abstract class Personaggio
         if (casuale.Next(0, 100) < probabilitaSchivata)
         {
             Console.WriteLine($"{bersaglio.nome} schiva l'attacco di {nome} !");
-            return;
+            return 0;
         }
 
         int probabilitaCritico = 5 + agilita;
@@ -199,6 +204,7 @@ abstract class Personaggio
 
         bersaglio.SubisciDanno(danno);
         Console.WriteLine($"{nome} attacca {bersaglio.nome} e infligge {danno} danni");
+        return danno;
     }
 
     public void Difenditi()

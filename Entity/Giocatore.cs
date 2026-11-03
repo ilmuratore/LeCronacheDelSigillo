@@ -23,15 +23,15 @@ class Giocatore : Personaggio
                 attacco += 5;
                 difesa += 3;
                 armatura += 3;
-                abilita.Add(new Abilita("Colpo potente", 8, 1, 10, false));
-                abilita.Add(new Abilita("Fendente potente", 20, 3, 20, false));
+                abilita.Add(new Abilita("Colpo potente", 8, 1, 10, false, TipoEffetto.Stordimento, 2, 60));
+                abilita.Add(new Abilita("Fendente potente", 20, 3, 20, false, TipoEffetto.Stordimento, 4, 50));
                 break;
             case TipoClasse.Mago:
                 manaMassimo += 40;
                 magia += 7;
                 agilita += 1;
-                abilita.Add(new Abilita("Palla di fuoco", 30, 1, 15, true));
-                abilita.Add(new Abilita("Tempesta di fulmini", 30, 3, 25, true));
+                abilita.Add(new Abilita("Palla di fuoco", 30, 1, 15, true, TipoEffetto.Bruciatura, 2, 30));
+                abilita.Add(new Abilita("Tempesta di fulmini", 30, 3, 25, true, TipoEffetto.Stordimento, 4, 40));
                 break;
             case TipoClasse.Ladro:
                 vitaMassima += 10;
@@ -40,8 +40,8 @@ class Giocatore : Personaggio
                 difesa += 1;
                 magia += 1;
                 agilita += 7;
-                abilita.Add(new Abilita("Affondo rapido", 20, 1, 10, false));
-                abilita.Add(new Abilita("Furtivo", 25, 3, 18, false));
+                abilita.Add(new Abilita("Affondo rapido", 20, 1, 10, false, TipoEffetto.Veleno, 2, 40));
+                abilita.Add(new Abilita("Furtivo", 25, 3, 18, false, TipoEffetto.Veleno, 4, 50));
                 break;
         }
 
