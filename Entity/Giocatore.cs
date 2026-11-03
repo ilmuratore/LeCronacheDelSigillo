@@ -5,13 +5,19 @@ class Giocatore : Personaggio
 {
     private TipoClasse tipoClasse;
     private int puntiDisponibili;
+    private int livello;
+
+    private List<Abilita> abilita;
 
     public Giocatore(string nome, TipoClasse tipoClasse) 
         : base(nome, 80,30,10,5,2,5,5)
     {
         this.tipoClasse = tipoClasse;
         puntiDisponibili = 5;
-
+        vita = vitaMassima;
+        mana = manaMassimo;
+        livello = 1;
+        abilita = new List<Abilita>();
         switch (tipoClasse)
         {
             case TipoClasse.Guerriero:
@@ -19,11 +25,15 @@ class Giocatore : Personaggio
                 attacco += 5;
                 difesa += 3;
                 armatura += 3;
+                abilita.Add(new Abilita("Colpo potente", 8, 1, 10, false));
+                abilita.Add(new Abilita("Fendente potente", 20, 3, 20, false));
                 break;
             case TipoClasse.Mago:
                 manaMassimo += 40;
                 magia += 7;
                 agilita += 1;
+                abilita.Add(new Abilita("Palla di fuoco", 30, 1, 15, true));
+                abilita.Add(new Abilita("Tempesta di fulmini", 30, 3, 25, true));
                 break;
             case TipoClasse.Ladro:
                 vitaMassima += 10;
@@ -32,19 +42,40 @@ class Giocatore : Personaggio
                 difesa += 1;
                 magia += 1;
                 agilita += 7;
+                abilita.Add(new Abilita("Affondo rapido", 20, 1, 10, false));
+                abilita.Add(new Abilita("Furtivo", 25, 3, 18, false));
                 break;
         }
-
-        vita = vitaMassima;
-        mana = manaMassimo;
     }
 
     public void MostraScheda()
     {
         Console.WriteLine($"\n Classe: {this.tipoClasse}");
+        Console.WriteLine($"Livello : {livello}");
         MostraStato();
         Console.WriteLine($"Punti abilita da distribuire : {this.puntiDisponibili}");
     }
+    
+    public void MostraAbilita()
+    {
+        Console.WriteLine($"\n === ABILITA DEL {tipoClasse.ToString().ToUpper()} ===");
+        for(int i = 0; i < abilita.Count; i++)
+        {
+            abilita[i].Mostra(i + 1, livello);
+        }
+    }
+
+    public bool UsaAbilita(int numero, Personaggio bersaglio, Random casuale)
+    {
+        if( numero < 1 || numero > abilita.Count)
+        {
+            Console.WriteLine("Abilitá non valida.");
+            return false;
+        }
+        return abilita[numero - 1].Esegui(this, bersaglio, casuale, livello);
+    }
+
+
     
     public int GetPuntiDisponibili()
     {
