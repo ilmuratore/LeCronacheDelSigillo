@@ -8,8 +8,9 @@ class Oggetto
     private int bonusAttacco;
     private int bonusArmatura;
     private int bonusMagia;
+    private int prezzo;
 
-    public Oggetto(string nome, TipoOggetto tipo, int potenza)
+    public Oggetto(string nome, TipoOggetto tipo, int potenza, int prezzo)
     {
         this.nome = nome;
         this.tipo = tipo;
@@ -17,8 +18,9 @@ class Oggetto
         bonusAttacco = 0;
         bonusArmatura = 0;
         bonusMagia = 0;
+        this.prezzo = prezzo;
     }
-    public Oggetto(string nome, TipoOggetto tipo, int bonusAttacco, int bonusArmatura, int bonusMagia)
+    public Oggetto(string nome, TipoOggetto tipo, int bonusAttacco, int bonusArmatura, int bonusMagia, int prezzo)
     {
         this.nome = nome;
         this.tipo = tipo;
@@ -26,6 +28,7 @@ class Oggetto
         this.bonusAttacco = bonusAttacco;
         this.bonusArmatura = bonusArmatura;
         this.bonusMagia = bonusMagia;
+        this.prezzo = prezzo;
     }
 
     public void Mostra(int numero)
@@ -128,5 +131,22 @@ class Oggetto
             segno = 1;
         }
         giocatore.ModificaBonusEquipaggiamento(bonusAttacco * segno, bonusArmatura * segno, bonusMagia * segno);
+    }
+    public int LeggiPrezzo()
+    {
+        return prezzo;
+    }
+    public void MostraInNegozio(int numero)
+    {
+        Console.WriteLine($"{numero}. {nome} ({Descrizione()}) - {prezzo} monete");
+    }
+
+    public Oggetto CreaCopia()
+    {
+        if (EEquipaggiabile())
+        {
+            return new Oggetto(nome, tipo, bonusAttacco, bonusArmatura, bonusMagia, prezzo);
+        }
+        return new Oggetto(nome, tipo, potenza, prezzo);
     }
 }

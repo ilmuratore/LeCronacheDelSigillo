@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Runtime.InteropServices.Marshalling;
-
 
 class Giocatore : Personaggio
 {
     private TipoClasse tipoClasse;
     private int puntiDisponibili;
     private int livello;
+    private int monete;
     private Oggetto? armaEquipaggiata;
     private Oggetto? armaturaEquipaggiata;
     private Oggetto? accessorioEquipaggiato;
@@ -19,17 +18,10 @@ class Giocatore : Personaggio
         this.tipoClasse = tipoClasse;
         puntiDisponibili = 5;
         livello = 1;
+        monete = 50;
         abilita = new List<Abilita>();
         inventario = new List<Oggetto>();
-        inventario.Add(new Oggetto("Pozione di salute", TipoOggetto.PozioneVita, 30));
-        inventario.Add(new Oggetto("Pozione di salute", TipoOggetto.PozioneVita, 30));
-        inventario.Add(new Oggetto("Pozione di mana", TipoOggetto.PozioneMana, 20));
-        inventario.Add(new Oggetto("Bomba incendiaria", TipoOggetto.BombaIncendiaria, 12));
-        inventario.Add(new Oggetto("Elisir della Forza", TipoOggetto.ElisirForza, 5));
-        inventario.Add(new Oggetto("Spada arruginita", TipoOggetto.Arma, 2,0,0));
-        inventario.Add(new Oggetto("Spada suprema", TipoOggetto.Arma, 10, 0, 0));
-        inventario.Add(new Oggetto("Corazza", TipoOggetto.Armatura, 0, 5, 0));
-        inventario.Add(new Oggetto("Amuleto", TipoOggetto.Accessorio, 0, 0, 10));
+        
         armaEquipaggiata = null;
         armaturaEquipaggiata = null;
         accessorioEquipaggiato = null;
@@ -127,6 +119,10 @@ class Giocatore : Personaggio
         }
 
 
+    }
+    public void MostraMonete()
+    {
+        Console.WriteLine($"Monete disponibili :{monete}");
     }
     public bool UsaAbilita(int numero, Personaggio bersaglio, Random casuale)
     {
@@ -244,4 +240,26 @@ class Giocatore : Personaggio
         Console.WriteLine("Equipaggiamento aggiornato");
         return true;
     }
+    public bool AcquistaOggetto(Oggetto articolo)
+    {
+        int prezzo = articolo.LeggiPrezzo();
+        if(prezzo <= 0)
+        {
+            Console.WriteLine("Articolo non acquistabile");
+            return false;
+        }
+        if (monete < prezzo)
+        {
+            Console.WriteLine($"Monete insufficienti. Ti mancano {prezzo - monete} monete");
+            return false;
+        }
+        Oggetto comprato = articolo.CreaCopia();
+        inventario.Add(comprato);
+        monete -= prezzo;
+        Console.WriteLine($"Acquisto completato. Hai speso {prezzo}");
+        MostraMonete();
+        return true;
+    }
+
+
 }

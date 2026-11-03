@@ -169,6 +169,7 @@ class Gioco
     {
         Console.WriteLine("\n Sei arrivato in un villaggio, che si trova ai piedi di antiche rovine");
         bool nelVillaggio = true;
+        Negozio negozio = new Negozio();
 
         while(nelVillaggio && giocatore.EInVita())
         {
@@ -184,6 +185,9 @@ class Gioco
                     {
                         nelVillaggio = false;
                     }
+                    break;
+                case "3":
+                    negozio.Apri(giocatore);
                     break;
                 case "5":
                     giocatore.MostraInventario();
