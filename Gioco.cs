@@ -5,7 +5,6 @@ using System.Text;
 
 class Gioco
 {
-
     public void Avvia()
     {
         bool inEsecuzione = true;
@@ -33,7 +32,6 @@ class Gioco
         }
 
     }
-
     private void MostraMenu()
     {
         Console.WriteLine("=== LE CRONACHE DEL SIGILLO === ");
@@ -42,7 +40,6 @@ class Gioco
         Console.WriteLine("0. Esci");
         Console.WriteLine("Scelta: ");
     }
-
     private void IniziaPartita()
     {
         Console.WriteLine("\n Un antico sigillo é stato spezzato...");
@@ -68,7 +65,6 @@ class Gioco
 
 
     }
-
     private void MostraIstruzioni()
     {
         Console.WriteLine("\n Digita il numero dell'opzione e premi INVIO.");
@@ -76,7 +72,6 @@ class Gioco
         Console.ReadLine();
         Console.WriteLine();
     }
-
     private string LeggiNome()
     {
         string nome = "";
@@ -94,7 +89,6 @@ class Gioco
 
         return nome;
     }
-
     private TipoClasse ScegliClasse()
     {
         while (true)
@@ -119,7 +113,6 @@ class Gioco
             }
         }
     }
-
     private void DistribuisciPunti(Giocatore giocatore)
     {
         Console.WriteLine($"\n Hai {giocatore.GetPuntiDisponibili()} da distribuire. ");
@@ -165,7 +158,6 @@ class Gioco
             }
         }
     }
-
     private void EntraVillaggio(Giocatore giocatore)
     {
         Console.WriteLine("\n Sei arrivato in un villaggio, che si trova ai piedi di antiche rovine");
@@ -246,8 +238,6 @@ class Gioco
             }
         }
     }
-
-
     private void MostraMenuVillaggio()
     {
         Console.WriteLine("\n === VILLAGGIO DI VALDORIA === ");
@@ -262,14 +252,11 @@ class Gioco
         Console.WriteLine("0. Termina la partita");
         Console.WriteLine("Scelta: ");
     }
-
     private bool AffrontaGoblin(Giocatore giocatore, Missione incarico)
     {
         string nomeGoblin = "Goblin Esploratore";
         Nemico goblin = new Nemico(nomeGoblin, 60, 10, 9, 3, 1, 1, 1);
-        Combattimento combattimento = new Combattimento(giocatore, goblin);
-
-        bool vittoria = combattimento.Inizia();
+        bool vittoria = AvviaCombattimentoConCheckpoint(giocatore, goblin);
 
         if (vittoria)
         {
@@ -460,8 +447,9 @@ class Gioco
     }
     private bool AffrontaNemicoMissione(Giocatore giocatore, Missione missione, Nemico nemico)
     {
-        Combattimento combattimento = new Combattimento(giocatore, nemico);
-        bool vittoria = combattimento.Inizia();
+        Checkpoint checkpoint = new Checkpoint(giocatore);
+        checkpoint.MostraConferma();
+        bool vittoria = AvviaCombattimentoConCheckpoint(giocatore, nemico);
         if (!vittoria)
         {
             Console.WriteLine("Sei stato sconfitto. La partita termina qui.");
@@ -531,6 +519,40 @@ class Gioco
             return;
         }
         AffrontaNemicoMissione(giocatore, missione, nemico);
+    }
+    private bool AvviaCombattimentoConCheckpoint(Giocatore giocatore, Nemico nemico)
+    {
+        Checkpoint checkpoint = new Checkpoint(giocatore);
+        checkpoint.MostraConferma();
+
+        while (true)
+        {
+            Combattimento combattimento = new Combattimento(giocatore, nemico);
+            if (combattimento.Inizia())
+            {
+                return true;
+            }
+            while (true)
+            {
+                Console.WriteLine("Vuoi riprovare questo combattimento ? ");
+                Console.WriteLine("1. Riprova dal checkpoint");
+                Console.WriteLine("0. Termina la partita");
+                Console.WriteLine("Scelta: ");
+                string? scelta = Console.ReadLine();
+                if(scelta == "1")
+                {
+                    checkpoint.Ripristina(giocatore);
+                    nemico.PreparaRivincita();
+                    Console.WriteLine("Checkpoint ricaricato.");
+                    break;
+                }
+                if(scelta == "0" || scelta == null)
+                {
+                    return false;
+                }
+                Console.WriteLine("Scelta non valida.");
+            }
+        }
     }
 }
 

@@ -67,4 +67,10 @@ class Boss : Nemico
             }
         }
     }
+
+    public override void PreparaRivincita()
+    {
+        base.PreparaRivincita();
+        secondaFaseBoss = false;
+    }
 }

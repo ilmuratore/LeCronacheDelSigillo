@@ -140,7 +140,6 @@ class Oggetto
     {
         Console.WriteLine($"{numero}. {nome} ({Descrizione()}) - {prezzo} monete");
     }
-
     public Oggetto CreaCopia()
     {
         if (EEquipaggiabile())

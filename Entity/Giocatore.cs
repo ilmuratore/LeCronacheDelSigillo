@@ -322,4 +322,83 @@ class Giocatore : Personaggio
 
         Console.WriteLine($"Esperienza {esperienza} / {EsperienzaNecessaria()}");
     }
+
+    public Giocatore CreaCopiaCompleta()
+    {
+        Giocatore copia = new Giocatore(nome, tipoClasse);
+        copia.vita = vita;
+        copia.vitaMassima = vitaMassima;
+        copia.mana = mana;
+        copia.manaMassimo = manaMassimo;
+        copia.attacco = attacco;
+        copia.difesa = difesa;
+        copia.armatura = armatura;
+        copia.magia = magia;
+        copia.agilita = agilita;
+        copia.puntiDisponibili = puntiDisponibili;
+        copia.livello = livello;
+        copia.esperienza = esperienza;
+        copia.monete = monete;
+
+        copia.abilita = new List<Abilita>(abilita);
+        copia.inventario = new List<Oggetto>(inventario);
+        foreach(Oggetto o in inventario)
+        {
+            copia.inventario.Add(o.CreaCopia());
+        }
+        if(armaEquipaggiata != null)
+        {
+            copia.armaEquipaggiata = armaEquipaggiata.CreaCopia();
+        }
+        if (armaturaEquipaggiata != null)
+        {
+            copia.armaturaEquipaggiata = armaturaEquipaggiata.CreaCopia();
+        }
+        if (accessorioEquipaggiato != null)
+        {
+            copia.accessorioEquipaggiato = accessorioEquipaggiato.CreaCopia();
+        }
+        return copia;
+    }
+    public void RipristinaDa(Giocatore fotografia)
+    {
+        nome = fotografia.nome;
+        tipoClasse = fotografia.tipoClasse;
+        vita = fotografia.vita;
+        vitaMassima = fotografia.vitaMassima;
+        mana = fotografia.mana;
+        manaMassimo = fotografia.manaMassimo;
+        attacco = fotografia.attacco;
+        difesa = fotografia.difesa;
+        armatura = fotografia.armatura;
+        magia = fotografia.magia;
+        agilita = fotografia.agilita;
+        puntiDisponibili = fotografia.puntiDisponibili;
+        livello = fotografia.livello;
+        esperienza = fotografia.esperienza;
+        monete = fotografia.monete;
+        inventario = new List<Oggetto>();
+        foreach(Oggetto o in fotografia.inventario)
+        {
+            inventario.Add(o.CreaCopia());
+        }
+        armaEquipaggiata = null;
+        armaturaEquipaggiata = null;
+        accessorioEquipaggiato = null;
+
+        if(fotografia.armaEquipaggiata != null)
+        {
+            armaEquipaggiata = fotografia.armaEquipaggiata.CreaCopia();
+        }
+        if (fotografia.armaturaEquipaggiata != null)
+        {
+            armaturaEquipaggiata = fotografia.armaturaEquipaggiata.CreaCopia();
+        }
+        if (fotografia.accessorioEquipaggiato != null)
+        {
+            accessorioEquipaggiato = fotografia.accessorioEquipaggiato.CreaCopia();
+        }
+        TerminaCombattimento();
+
+    }
 }

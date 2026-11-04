@@ -81,6 +81,12 @@ class Nemico : Personaggio
             Attacca(giocatore, casuale);
         }
     }
-   
+    
+    public virtual void PreparaRivincita()
+    {
+        vita = vitaMassima;
+        mana = manaMassimo;
+        TerminaCombattimento();
+    }
 
 }

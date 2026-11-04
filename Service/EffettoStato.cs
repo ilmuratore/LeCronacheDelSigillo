@@ -13,7 +13,6 @@
     {
         return tipo == altroTipo;
     }
-
     public void Rinnova(int durata)
     {
         if(durata > turniRimanenti)
@@ -21,17 +20,14 @@
             turniRimanenti = durata;
         }
     }
-
     public bool EScaduto()
     {
         return turniRimanenti <= 0;
     }
-
     public void Mostra()
     {
         Console.WriteLine($"Effetto {tipo} ({turniRimanenti} turni");
     }
-    
     public bool ApplicaAllInizioDelTurno(Personaggio bersaglio)
     {
         bool saltaAzione = false;
