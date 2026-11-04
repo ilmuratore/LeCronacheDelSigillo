@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 class Gioco
@@ -64,7 +65,7 @@ class Gioco
 
         Console.ReadLine();
         Console.WriteLine();
-      
+
 
     }
 
@@ -85,11 +86,11 @@ class Gioco
             nome = "" + Console.ReadLine();
             nome = nome.Trim();
 
-            if( nome == "")
+            if (nome == "")
             {
                 Console.WriteLine("Il nome non puo essere vuoto.");
             }
-         }
+        }
 
         return nome;
     }
@@ -122,8 +123,8 @@ class Gioco
     private void DistribuisciPunti(Giocatore giocatore)
     {
         Console.WriteLine($"\n Hai {giocatore.GetPuntiDisponibili()} da distribuire. ");
-        
-        while(giocatore.HaPuntiDaDistribuire())
+
+        while (giocatore.HaPuntiDaDistribuire())
         {
             giocatore.MostraScheda();
             Console.WriteLine(" === Quale statistica vuoi aumentare ? ===");
@@ -170,8 +171,26 @@ class Gioco
         Console.WriteLine("\n Sei arrivato in un villaggio, che si trova ai piedi di antiche rovine");
         bool nelVillaggio = true;
         Negozio negozio = new Negozio();
+        Missione incarico = new Missione(
+            "La prima pattuglia",
+            "Il capitano Aldren chiede di fermare un Goblin nei pressi di Valdoria",
+            "Goblin Esploratore", 1, 20, 20);
+        NPC capitano = new NPC("Capitano Aldren", incarico);
+        Missione foresta = new Missione(
+            "Il primo sigillo : Foresta",
+            "La Saggia Elara ti chiede di fermare il predone che custodisce il primo frammento del sigillo",
+            "Goblin Predone", 1, 25, 30);
+        Missione rovine = new Missione(
+            "Le rovine nel Deserto",
+            "Gli indizzi sulla posizione del secondo frammento ti portano alle rovine nel Deserto. Le rovine sono protette da un antico Guardiano",
+            "Guardiano delle Rovine", 1, 35, 50);
+        Missione custode = new Missione(
+            "Il Custode Corrotto",
+            "Hai trovato anche il terzo frammento del Sigillo. Uno strano portale si apre dinanzi a te. Un nuovo nemico fa la sua comparsa",
+            "Custode Corrotto", 1, 75, 100);
+        NPC elara = new NPC("Saggia Elara", foresta);
 
-        while(nelVillaggio && giocatore.EInVita())
+        while (nelVillaggio && giocatore.EInVita())
         {
             MostraMenuVillaggio();
             switch (Console.ReadLine())
@@ -180,7 +199,7 @@ class Gioco
                     giocatore.MostraScheda();
                     break;
                 case "2":
-                    bool vittoria = AffrontaGoblin(giocatore);
+                    bool vittoria = AffrontaGoblin(giocatore, incarico);
                     if (!vittoria)
                     {
                         nelVillaggio = false;
@@ -189,12 +208,21 @@ class Gioco
                 case "3":
                     negozio.Apri(giocatore);
                     break;
+                case "4":
+                    ApriBacheca(giocatore, capitano, incarico);
+                    break;
                 case "5":
                     giocatore.MostraInventario();
                     giocatore.MostraEquipaggiamento();
                     break;
                 case "6":
                     EquipaggiaDalVillaggio(giocatore);
+                    break;
+                case "7":
+                    if (!ApriStoria(giocatore, foresta, rovine, custode, elara))
+                    {
+                        nelVillaggio = false;
+                    }
                     break;
                 case "0":
                     nelVillaggio = false;
@@ -214,34 +242,36 @@ class Gioco
         Console.WriteLine("1. Mostra la scheda Personaggio");
         Console.WriteLine("2. Affronta il Goblin (allenamento )");
         Console.WriteLine("3. Negozio");
-        Console.WriteLine("4. Missioni");
+        Console.WriteLine("4. Bacheca Missioni e NPC");
         Console.WriteLine("5. Inventario e Equipaggiamento");
         Console.WriteLine("6. Equipaggia un oggetto");
+        Console.WriteLine("7. Storia Principale: L'Antico Sigillo");
         Console.WriteLine("0. Termina la partita");
         Console.WriteLine("Scelta: ");
     }
 
-    private bool AffrontaGoblin(Giocatore giocatore)
+    private bool AffrontaGoblin(Giocatore giocatore, Missione incarico)
     {
-        Nemico goblin = new Nemico("Goblin Esploratore", 60, 10, 9, 3, 1, 1, 1);
+        string nomeGoblin = "Goblin Esploratore";
+        Nemico goblin = new Nemico(nomeGoblin, 60, 10, 9, 3, 1, 1, 1);
         Combattimento combattimento = new Combattimento(giocatore, goblin);
 
         bool vittoria = combattimento.Inizia();
 
         if (vittoria)
         {
+            incarico.RegistraVittoria(nomeGoblin);
             Console.WriteLine("Hai protetto il villaggio di Valdoria");
+            Console.WriteLine("Puoi spendere le tue ricompense nel negozio del villaggio");
             Console.WriteLine("I tuoi HP non vengono rigenerati");
         }
         else
         {
-            Console.WriteLine("Il tuo eore é stato sconfitto. Partita terminata");
-            
+            Console.WriteLine("Sei stato sconfitto. La partita termina qui.");
         }
         return vittoria;
 
     }
-
     private void EquipaggiaDalVillaggio(Giocatore giocatore)
     {
         giocatore.MostraInventario();
@@ -250,7 +280,7 @@ class Gioco
         Console.WriteLine("Numero dell'oggetto da equipaggiare: ");
 
         string? risposta = Console.ReadLine();
-        if(!int.TryParse(risposta, out int numero))
+        if (!int.TryParse(risposta, out int numero))
         {
             Console.WriteLine("Devi inserire un numero.");
             return;
@@ -267,5 +297,155 @@ class Gioco
             giocatore.MostraScheda();
         }
     }
+    private void ApriBacheca(Giocatore giocatore, NPC capitano, Missione incarico)
+    {
+        bool nellaBacheca = true;
+
+        while (nellaBacheca)
+        {
+            Console.WriteLine("\n === BACHECA MISSIONI VALDORIA ===");
+            Console.WriteLine("1. Parla con il Capitano Aldren");
+            Console.WriteLine("2. Consulta l'incarico");
+            Console.WriteLine("0. Torna al villaggio");
+            Console.WriteLine("Scelta: ");
+
+            switch (Console.ReadLine())
+            {
+                case "1":
+                    capitano.Parla(giocatore);
+                    break;
+                case "2":
+                    incarico.Mostra();
+                    break;
+                case "0":
+                    nellaBacheca = false;
+                    break;
+                default:
+                    Console.WriteLine("Scelta non valida.");
+                    break;
+                    ; }
+
+
+        }
+    }
+    private bool ApriStoria(Giocatore giocatore, Missione foresta, Missione rovine, Missione custode, NPC elara)
+    {
+        bool nelMenuStoria = true;
+        while(nelMenuStoria && giocatore.EInVita())
+        {
+            Console.WriteLine("\n === STORIA PRINCIPALE : L'ANTICO SIGILLO ===");
+            Console.WriteLine("1. Parla con la Saggia Elara");
+            Console.WriteLine("2. Parti per la missione principale");
+            Console.WriteLine("3. Raggiungi il Portale del Custode");
+            Console.WriteLine("4. Consulta il Diario");
+            Console.WriteLine("0. Torna al villaggio");
+            Console.WriteLine("Scelta: ");
+
+            switch (Console.ReadLine())
+            {
+                case "1":
+                    ParlaConElara(giocatore, foresta, rovine, custode, elara);
+                    break;
+                case "2":
+                    if (foresta.LeggiStato() == StatoMissione.InCorso && !foresta.EProntaPerConsegna())
+                    {
+                        Console.WriteLine("\n Entri nella foresta dei Goblin.");
+                        AffrontaNemicoStoria(giocatore, foresta, new Nemico("Goblin Predone", 60, 30, 10, 5, 5, 10, 5));
+                    } else if (foresta.LeggiStato() == StatoMissione.Completata &&
+                        rovine.LeggiStato() == StatoMissione.InCorso &&
+                        !rovine.EProntaPerConsegna())
+                    {
+                        Console.WriteLine("\n Esplori le Rovine nel Deserto. Ti senti osservato.");
+                        AffrontaNemicoStoria(giocatore, rovine, new Nemico("Guardiano delle Rovine", 100, 10, 10, 10, 5, 5, 5));
+                    } else if (rovine.LeggiStato() == StatoMissione.Completata && // da rimuovere con il menu 4 TODO
+                        custode.LeggiStato() == StatoMissione.InCorso &&
+                        !custode.EProntaPerConsegna())
+                    {
+                        Console.WriteLine("\n Attraversi il portale. Il Custode Corrotto ti attende");
+                        AffrontaNemicoStoria(giocatore, custode, new Nemico("Custde Corrotto", 150, 50, 20, 15, 10, 20, 20));
+                    } // da rimuovere con il menu 4 TODO 
+                    else
+                    {
+                        Console.WriteLine("Parla con Elara per riunire i frammenti del Sigillo");
+                    }
+                    break;
+                case "3":
+                    if(rovine.LeggiStato() != StatoMissione.Completata)
+                    {
+                        Console.WriteLine("Il portale é sigillato: servono entrambi i frammenti del Sigillo");
+                    } else if(custode.LeggiStato() == StatoMissione.NonIniziata)
+                    {
+                        Console.WriteLine("Il portale é aperto. Parla con Elara.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Il Custode Corrotto ti attende.");
+                    }
+                    break;
+                case "4":
+                    MostraDiarioStoria(foresta, rovine, custode);
+                    break;
+                case "0":
+                    nelMenuStoria = false;
+                    break;
+                default:
+                    break;
+            }
+        }
+        return giocatore.EInVita();
+
+    }
+
+    private void MostraDiarioStoria(Missione foresta, Missione rovine, Missione custode)
+    {
+        Console.WriteLine("\n === DIARIO STORIA ===");
+        foresta.Mostra();
+        if (foresta.LeggiStato() == StatoMissione.Completata)
+        {
+            rovine.Mostra();
+        }
+        else
+        {
+            Console.WriteLine("\n Fase 2: Rovine nel Deserto (bloccata)");
+        }
+
+        if (rovine.LeggiStato() == StatoMissione.Completata)
+        {
+            custode.Mostra();
+        }
+        else
+        {
+            Console.WriteLine("\n Fase 3: Custode Corrotto (bloccata)");
+        }
+    }
+    private void ParlaConElara(Giocatore giocatore, Missione foresta, Missione rovine, Missione custode, NPC elara)
+    {
+        if (foresta.LeggiStato() != StatoMissione.Completata)
+        {
+            elara.Parla(giocatore, foresta);
+        } else if (rovine.LeggiStato() != StatoMissione.Completata)
+        {
+            Console.WriteLine("Elara: Ottimo hai recuperato il primo frammento e sconfitto il predone. Ora dirigiti verso le Rovine nel Deserto. Fai attenzione un antico e potente Guardiano difende il secondo frammento.");
+            elara.Parla(giocatore, rovine);
+        }
+        else
+        {
+            Console.WriteLine("Elara: Hai riunito tutti i frammenti. Ma cosa sta succedendo. Guarda un portale dimensionale! Qualcosa lo sta attraversando!");
+            elara.Parla(giocatore, custode);
+        }
+    }
+    private bool AffrontaNemicoStoria(Giocatore giocatore, Missione missione, Nemico nemico)
+    {
+        Combattimento combattimento = new Combattimento(giocatore, nemico);
+        bool vittoria = combattimento.Inizia();
+        if (!vittoria)
+        {
+            Console.WriteLine("Sei stato sconfitto. La partita termina qui.");
+            return false;
+        }
+        missione.RegistraVittoria(nemico.LeggiNome());
+        Console.WriteLine("Hai recuperato il frammento. Torna da Elara per consegnarlo");
+        return true;
+    } 
 }
 

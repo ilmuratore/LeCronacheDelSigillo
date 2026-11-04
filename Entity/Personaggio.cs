@@ -53,12 +53,14 @@ abstract class Personaggio
             Console.WriteLine($"Elisir forza: + {bonusFisicoTemporaneo} per {attacchiFisiciRimanenti} attacchi fisici ");
         }
     }
-
+    public string LeggiNome()
+    {
+        return nome;
+    }
     public bool EInVita()
     {
         return vita > 0;
     }
-
     public void SubisciDanno(int danno)
     {
         if (danno < 0)
@@ -73,7 +75,6 @@ abstract class Personaggio
             vita = 0;
         }
     }
-
     public void Cura(int quantita)
     {
         if (quantita <= 0 || !EInVita())
@@ -88,8 +89,6 @@ abstract class Personaggio
             vita = vitaMassima;
         }
     }
-
-
     public bool ConsumaMana(int quantita)
     {
         if (quantita <= 0 || !EInVita() || mana < quantita)
@@ -99,7 +98,6 @@ abstract class Personaggio
         mana = mana - quantita;
         return true;
     }
-
     public void RecuperaMana(int quantita)
     {
         if(quantita <= 0 || !EInVita())
@@ -114,7 +112,6 @@ abstract class Personaggio
             mana = manaMassimo;
         }
     }
-
     public void Attacca(Personaggio bersaglio, Random casuale)
     {
         if(!EInVita() || !bersaglio.EInVita())
@@ -124,7 +121,6 @@ abstract class Personaggio
         int potenza = attacco + ConsumaBonusFisico();
         EseguiAttacco(bersaglio, casuale, potenza);
     }
-
     public bool AttaccaConAbilita(Personaggio bersaglio, Random casuale, string nomeAbilita, int costoMana, int bonusDanno, 
         bool usaMagia,TipoEffetto tipoEffetto, int durataEffetto, int probabilitáEffetto)
     {
@@ -157,7 +153,6 @@ abstract class Personaggio
         Console.WriteLine($"{nome} usa {nomeAbilita} ! ( - {costoMana} MP )");
         return true;
     }
-
     protected int EseguiAttacco(Personaggio bersaglio, Random casuale, int potenza)
     {
         if (!EInVita() || !bersaglio.EInVita())
@@ -222,7 +217,6 @@ abstract class Personaggio
         Console.WriteLine($"{nome} attacca {bersaglio.nome} e infligge {danno} danni");
         return danno;
     }
-
     public void Difenditi()
     {
         if (!EInVita())
@@ -233,7 +227,6 @@ abstract class Personaggio
         Console.WriteLine($"{nome} si mette in difesa: danni minori al prossimo attacco");
 
     }
-
     public void ApplicaEffetto(TipoEffetto tipo, int durata)
     {
         if (!EInVita() || tipo == TipoEffetto.Nessuno || durata <= 0)
@@ -253,7 +246,6 @@ abstract class Personaggio
         effetti.Add(new EffettoStato(tipo, durata));
         Console.WriteLine($"{nome} subisce l'effetto {tipo} per {durata} turni");
     }
-
     public bool IniziaTurno()
     {
         bool saltaAzione = false;
@@ -272,23 +264,19 @@ abstract class Personaggio
         }
         return saltaAzione;
     }
-
     public void TerminaCombattimento()
     {
         effetti.Clear();
         difesaAttiva = false;
     }
-
     public bool PuoCurarsi()
     {
         return EInVita() && vita < vitaMassima;
     }
-    
     public bool PuoRecuperareMana()
     {
         return EInVita() && mana < manaMassimo;
     }
-
     public bool AttivaBonusFisico(int bonus, int numeroAttacchi)
     {
         if(!EInVita() || bonus <= 0 || numeroAttacchi <= 0 || attacchiFisiciRimanenti > 0)

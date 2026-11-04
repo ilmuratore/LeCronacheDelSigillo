@@ -294,11 +294,11 @@ class Giocatore : Personaggio
         esperienza += quantita;
         Console.WriteLine($"Hai ottenuto {quantita} XP");
 
-        while(esperienza >= EsperienzaNecessaria()) // Liv 1 39 => Liv 2 ( 40 punti esperienza ) 
+        while(esperienza >= EsperienzaNecessaria()) 
         {
-            int soglia = EsperienzaNecessaria(); // liv 2 40 punti
-            esperienza -= soglia; // Esperienza 0
-            livello++; // liv 2
+            int soglia = EsperienzaNecessaria(); 
+            esperienza -= soglia; 
+            livello++;
 
             vitaMassima += 10;
             manaMassimo += 5;
