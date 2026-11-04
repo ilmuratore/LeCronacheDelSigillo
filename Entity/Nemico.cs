@@ -3,6 +3,7 @@
 class Nemico : Personaggio
 {
     private int moneteRicompensa;
+    private int esperienzaRicompensa;
 
     public Nemico(string nome, int vitaMassima, int manaMassimo, int attacco, int difesa, 
                     int armatura, int magia, int agilita) 
@@ -11,12 +12,17 @@ class Nemico : Personaggio
         vita = vitaMassima;
         mana = manaMassimo;
         moneteRicompensa = 12;
+        esperienzaRicompensa = 20;
     }
+
     public int LeggiMoneteRicompensa()
     {
         return moneteRicompensa;
     }
-
+    public int LeggiEsperienzaRicompensa()
+    {
+        return esperienzaRicompensa;
+    }
     public Oggetto? EstraiOggetti(Random casuale)
     {
         int tiro = casuale.Next(0, 100);
@@ -34,13 +40,11 @@ class Nemico : Personaggio
         }
         return null;
     }
-
     public void Presentati()
     {
         Console.WriteLine($"\n Un nemico appare: {this.nome} !");
         Console.WriteLine("Si prepara a combattere");
     }
-
     public void EseguiTurno(Giocatore giocatore, Random casuale)
     {
         if(!EInVita() || !giocatore.EInVita())
@@ -69,5 +73,6 @@ class Nemico : Personaggio
             Attacca(giocatore, casuale);
         }
     }
+   
 
 }

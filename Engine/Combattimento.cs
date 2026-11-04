@@ -87,7 +87,7 @@ class Combattimento
         terminato = true;
         giocatore.TerminaCombattimento();
         nemico.TerminaCombattimento();
-        AssegnaRicompnese();
+        AssegnaRicompense();
         return vittoria;
     }
 
@@ -112,7 +112,6 @@ class Combattimento
 
         }
     }
-
     private bool ScegliOggetto()
     {
         giocatore.MostraInventario();
@@ -132,11 +131,11 @@ class Combattimento
         }
         return giocatore.UsaOggetto(numero, nemico);
     }
-
-    private void AssegnaRicompnese()
+    private void AssegnaRicompense()
     {
         Console.WriteLine("\n === RICOMPENSE ===");
         giocatore.RiceviMonete(nemico.LeggiMoneteRicompensa());
+        giocatore.RiceviEsperienza(nemico.LeggiEsperienzaRicompensa());
 
         Oggetto? trovato = nemico.EstraiOggetti(casuale);
         if(trovato == null)
@@ -148,4 +147,7 @@ class Combattimento
             giocatore.RiceviOggetti(trovato);
         }
     }
+
+
+
 }

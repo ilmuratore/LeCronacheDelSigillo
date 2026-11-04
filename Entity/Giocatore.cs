@@ -5,6 +5,8 @@ class Giocatore : Personaggio
     private TipoClasse tipoClasse;
     private int puntiDisponibili;
     private int livello;
+    private int esperienza;
+
     private int monete;
     private Oggetto? armaEquipaggiata;
     private Oggetto? armaturaEquipaggiata;
@@ -18,6 +20,7 @@ class Giocatore : Personaggio
         this.tipoClasse = tipoClasse;
         puntiDisponibili = 5;
         livello = 1;
+        esperienza = 0;
         monete = 50;
         abilita = new List<Abilita>();
         inventario = new List<Oggetto>();
@@ -63,8 +66,10 @@ class Giocatore : Personaggio
     {
         Console.WriteLine($"\n Classe: {this.tipoClasse}");
         Console.WriteLine($"Livello : {livello}");
-        MostraStato();
+        Console.WriteLine($"Esperienza: {esperienza} / {EsperienzaNecessaria()} XP");
         Console.WriteLine($"Punti abilita da distribuire : {this.puntiDisponibili}");
+        MostraMonete();
+        MostraStato();
     }
     public void MostraAbilita()
     {
@@ -260,7 +265,6 @@ class Giocatore : Personaggio
         MostraMonete();
         return true;
     }
-
     public void RiceviMonete(int quantita)
     {
         if(quantita <= 0)
@@ -271,11 +275,51 @@ class Giocatore : Personaggio
         Console.WriteLine($"Ottieni {quantita} monete");
         MostraMonete();
     }
-
     public void RiceviOggetti(Oggetto oggetto)
     {
         inventario.Add(oggetto);
         Console.WriteLine("Hai trovato un oggetto: ");
         oggetto.Mostra(inventario.Count);
+    }
+    private int EsperienzaNecessaria()
+    {
+        return livello * 40;
+    }
+    public void RiceviEsperienza(int quantita)
+    {
+        if(quantita <= 0)
+        {
+            return;
+        }
+        esperienza += quantita;
+        Console.WriteLine($"Hai ottenuto {quantita} XP");
+
+        while(esperienza >= EsperienzaNecessaria()) // Liv 1 39 => Liv 2 ( 40 punti esperienza ) 
+        {
+            int soglia = EsperienzaNecessaria(); // liv 2 40 punti
+            esperienza -= soglia; // Esperienza 0
+            livello++; // liv 2
+
+            vitaMassima += 10;
+            manaMassimo += 5;
+            attacco += 2;
+            difesa += 1;
+            magia += 2;
+            agilita += 1;
+
+            vita = vitaMassima;
+            mana = manaMassimo;
+
+            Console.WriteLine($"LEVEL UP. Ora sei al livello {livello} !");
+            Console.WriteLine("Bonus applicati: +10HP, +5MP, +2 Attacco, +1 Difesa, +2 Magia, +1 Agilita");
+            Console.WriteLine("HP e MP ripristinati");
+            if(livello == 4)
+            {
+                Console.WriteLine("Nuova abilitá sbloccata!");
+            }
+
+        }
+
+        Console.WriteLine($"Esperienza {esperienza} / {EsperienzaNecessaria()}");
     }
 }
