@@ -1,4 +1,4 @@
-﻿enum TipoEffetto
+enum TipoEffetto
 {
     Nessuno,
     Veleno,

@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "aldren",
+    "Nome": "Capitano Aldren"
+  },
+  {
+    "Id": "elara",
+    "Nome": "Saggia Elara"
+  },
+  {
+    "Id": "mira",
+    "Nome": "Erborista Mira"
+  },
+  {
+    "Id": "doran",
+    "Nome": "Fabbro Doran"
+  },
+  {
+    "Id": "archivista",
+    "Nome": "Archivista Selin"
+  },
+  {
+    "Id": "viandante",
+    "Nome": "Viandante Orin"
+  }
+]

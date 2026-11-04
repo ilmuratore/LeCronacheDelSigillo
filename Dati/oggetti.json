@@ -1,0 +1,112 @@
+[
+  {
+    "Id": "pozione_salute",
+    "Nome": "Pozione di salute",
+    "Tipo": "PozioneVita",
+    "Potenza": 30,
+    "BonusAttacco": 0,
+    "BonusArmatura": 0,
+    "BonusMagia": 0,
+    "Prezzo": 15
+  },
+  {
+    "Id": "pozione_mana",
+    "Nome": "Pozione di mana",
+    "Tipo": "PozioneMana",
+    "Potenza": 20,
+    "BonusAttacco": 0,
+    "BonusArmatura": 0,
+    "BonusMagia": 0,
+    "Prezzo": 15
+  },
+  {
+    "Id": "bomba_incendiaria",
+    "Nome": "Bomba incendiaria",
+    "Tipo": "BombaIncendiaria",
+    "Potenza": 12,
+    "BonusAttacco": 0,
+    "BonusArmatura": 0,
+    "BonusMagia": 0,
+    "Prezzo": 22
+  },
+  {
+    "Id": "elisir_forza",
+    "Nome": "Elisir della forza",
+    "Tipo": "ElisirForza",
+    "Potenza": 5,
+    "BonusAttacco": 0,
+    "BonusArmatura": 0,
+    "BonusMagia": 0,
+    "Prezzo": 25
+  },
+  {
+    "Id": "spada_ferro",
+    "Nome": "Spada di ferro",
+    "Tipo": "Arma",
+    "Potenza": 0,
+    "BonusAttacco": 2,
+    "BonusArmatura": 0,
+    "BonusMagia": 0,
+    "Prezzo": 30
+  },
+  {
+    "Id": "ascia_rinforzata",
+    "Nome": "Ascia rinforzata",
+    "Tipo": "Arma",
+    "Potenza": 0,
+    "BonusAttacco": 4,
+    "BonusArmatura": 0,
+    "BonusMagia": 0,
+    "Prezzo": 60
+  },
+  {
+    "Id": "corazza_cuoio",
+    "Nome": "Corazza di cuoio",
+    "Tipo": "Armatura",
+    "Potenza": 0,
+    "BonusAttacco": 0,
+    "BonusArmatura": 2,
+    "BonusMagia": 0,
+    "Prezzo": 35
+  },
+  {
+    "Id": "amuleto_arcano",
+    "Nome": "Amuleto arcano",
+    "Tipo": "Accessorio",
+    "Potenza": 0,
+    "BonusAttacco": 0,
+    "BonusArmatura": 0,
+    "BonusMagia": 3,
+    "Prezzo": 40
+  },
+  {
+    "Id": "spada_incantata",
+    "Nome": "Spada incantata",
+    "Tipo": "Arma",
+    "Potenza": 0,
+    "BonusAttacco": 6,
+    "BonusArmatura": 0,
+    "BonusMagia": 0,
+    "Prezzo": 100
+  },
+  {
+    "Id": "corazza_guardiano",
+    "Nome": "Corazza del Guardiano",
+    "Tipo": "Armatura",
+    "Potenza": 0,
+    "BonusAttacco": 0,
+    "BonusArmatura": 4,
+    "BonusMagia": 0,
+    "Prezzo": 85
+  },
+  {
+    "Id": "amuleto_antico",
+    "Nome": "Amuleto antico",
+    "Tipo": "Accessorio",
+    "Potenza": 0,
+    "BonusAttacco": 0,
+    "BonusArmatura": 0,
+    "BonusMagia": 6,
+    "Prezzo": 110
+  }
+]

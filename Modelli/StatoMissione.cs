@@ -1,4 +1,4 @@
-﻿enum StatoMissione
+enum StatoMissione
 {
     NonIniziata,
     InCorso,

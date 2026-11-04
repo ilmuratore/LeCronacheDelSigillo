@@ -1,0 +1,19 @@
+[
+  {
+    "Id": "valdoria",
+    "Nome": "Bottega di Valdoria",
+    "Oggetti": [
+      "pozione_salute",
+      "pozione_mana",
+      "bomba_incendiaria",
+      "elisir_forza",
+      "spada_ferro",
+      "ascia_rinforzata",
+      "corazza_cuoio",
+      "amuleto_arcano",
+      "spada_incantata",
+      "corazza_guardiano",
+      "amuleto_antico"
+    ]
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "NPCId": "aldren",
+    "Stato": "NonIniziata",
+    "Testo": "Valdoria ha bisogno di nuove guardie."
+  },
+  {
+    "NPCId": "aldren",
+    "Stato": "NonIniziata",
+    "Testo": "Scegli dalla bacheca l incarico che desideri affrontare."
+  },
+  {
+    "NPCId": "aldren",
+    "Stato": "InCorso",
+    "Testo": "Le pattuglie attendono notizie."
+  },
+  {
+    "NPCId": "aldren",
+    "Stato": "Completata",
+    "Testo": "Il villaggio ti ringrazia per il tuo coraggio."
+  },
+  {
+    "NPCId": "elara",
+    "Stato": "NonIniziata",
+    "Testo": "I frammenti del Sigillo chiamano un nuovo eroe."
+  },
+  {
+    "NPCId": "elara",
+    "Stato": "NonIniziata",
+    "Testo": "Scegli dalla bacheca l incarico che desideri affrontare."
+  },
+  {
+    "NPCId": "elara",
+    "Stato": "InCorso",
+    "Testo": "I sentieri della magia restano pericolosi."
+  },
+  {
+    "NPCId": "elara",
+    "Stato": "Completata",
+    "Testo": "Il potere del Sigillo si sta ricomponendo."
+  },
+  {
+    "NPCId": "mira",
+    "Stato": "NonIniziata",
+    "Testo": "Non posso attraversare la brughiera da sola."
+  },
+  {
+    "NPCId": "mira",
+    "Stato": "NonIniziata",
+    "Testo": "Scegli dalla bacheca l incarico che desideri affrontare."
+  },
+  {
+    "NPCId": "mira",
+    "Stato": "InCorso",
+    "Testo": "Le mie erbe attendono oltre il sentiero."
+  },
+  {
+    "NPCId": "mira",
+    "Stato": "Completata",
+    "Testo": "Le pozioni del villaggio saranno più efficaci grazie a te."
+  },
+  {
+    "NPCId": "doran",
+    "Stato": "NonIniziata",
+    "Testo": "La strada e occupata dai predoni."
+  },
+  {
+    "NPCId": "doran",
+    "Stato": "NonIniziata",
+    "Testo": "Scegli dalla bacheca l incarico che desideri affrontare."
+  },
+  {
+    "NPCId": "doran",
+    "Stato": "InCorso",
+    "Testo": "Per lavorare serve un passo libero e sicuro."
+  },
+  {
+    "NPCId": "doran",
+    "Stato": "Completata",
+    "Testo": "Posso tornare alla mia forgia, grazie."
+  },
+  {
+    "NPCId": "archivista",
+    "Stato": "NonIniziata",
+    "Testo": "Le scritture parlano di un male sepolto."
+  },
+  {
+    "NPCId": "archivista",
+    "Stato": "NonIniziata",
+    "Testo": "Scegli dalla bacheca l incarico che desideri affrontare."
+  },
+  {
+    "NPCId": "archivista",
+    "Stato": "InCorso",
+    "Testo": "Gli spiriti custodiscono ancora segreti."
+  },
+  {
+    "NPCId": "archivista",
+    "Stato": "Completata",
+    "Testo": "Le rune antiche possono finalmente essere studiate."
+  },
+  {
+    "NPCId": "viandante",
+    "Stato": "NonIniziata",
+    "Testo": "I mercanti non riescono a passare."
+  },
+  {
+    "NPCId": "viandante",
+    "Stato": "NonIniziata",
+    "Testo": "Scegli dalla bacheca l incarico che desideri affrontare."
+  },
+  {
+    "NPCId": "viandante",
+    "Stato": "InCorso",
+    "Testo": "La sabbia nasconde una minaccia."
+  },
+  {
+    "NPCId": "viandante",
+    "Stato": "Completata",
+    "Testo": "Le carovane possono ripartire."
+  }
+]

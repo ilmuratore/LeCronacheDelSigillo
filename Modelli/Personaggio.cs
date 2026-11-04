@@ -1,5 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+using System;
+using System.Collections.Generic;
 
 abstract class Personaggio
 {
@@ -18,12 +18,14 @@ abstract class Personaggio
     private int bonusFisicoTemporaneo;
     private int attacchiFisiciRimanenti;
 
-    protected Personaggio(string nome, int vitaMassima,
-        int manaMassimo, int attacco, int difesa, int armatura, int magia, int agilita)
+    protected Personaggio(string nome, int vitaMassima, int manaMassimo,
+                          int attacco, int difesa, int armatura, int magia, int agilita)
     {
         this.nome = nome;
         this.vitaMassima = vitaMassima;
+        vita = vitaMassima;
         this.manaMassimo = manaMassimo;
+        mana = manaMassimo;
         this.attacco = attacco;
         this.difesa = difesa;
         this.armatura = armatura;
@@ -34,95 +36,56 @@ abstract class Personaggio
         attacchiFisiciRimanenti = 0;
     }
 
-    public void MostraStato()
-    {
-        Console.WriteLine($" === {this.nome} ===");
-        Console.WriteLine($"HP: {this.vita} / {this.vitaMassima}");
-        Console.WriteLine($"MP: {this.mana} / {this.manaMassimo}");
-        Console.WriteLine($"Attacco: {this.attacco}");
-        Console.WriteLine($"Difesa: {this.difesa}");
-        Console.WriteLine($"Armatura: {this.armatura}");
-        Console.WriteLine($"Magia: {this.magia}");
-        Console.WriteLine($"Agilitá : {this.agilita}");
-        for(int i = 0; i < effetti.Count; i++)
-        {
-            effetti[i].Mostra();
-        }
-        if(attacchiFisiciRimanenti > 0)
-        {
-            Console.WriteLine($"Elisir forza: + {bonusFisicoTemporaneo} per {attacchiFisiciRimanenti} attacchi fisici ");
-        }
-    }
     public string LeggiNome()
     {
         return nome;
     }
-    public bool EInVita()
+
+    public void MostraStato()
     {
-        return vita > 0;
-    }
-    public void SubisciDanno(int danno)
-    {
-        if (danno < 0)
+        Console.WriteLine("=== " + nome + " ===");
+        Console.WriteLine("HP: " + vita + "/" + vitaMassima);
+        Console.WriteLine("MP: " + mana + "/" + manaMassimo);
+        Console.WriteLine("Attacco: " + attacco);
+        Console.WriteLine("Difesa: " + difesa);
+        Console.WriteLine("Armatura: " + armatura);
+        Console.WriteLine("Magia: " + magia);
+        Console.WriteLine("Agilita: " + agilita);
+        if (attacchiFisiciRimanenti > 0)
         {
-            return;
+            Console.WriteLine("Elisir forza: +" + bonusFisicoTemporaneo +
+                              " per " + attacchiFisiciRimanenti + " attacchi fisici");
         }
 
-        vita -= danno;
-
-        if (vita < 0)
+        for (int i = 0; i < effetti.Count; i++)
         {
-            vita = 0;
-        }
-    }
-    public void Cura(int quantita)
-    {
-        if (quantita <= 0 || !EInVita())
-        {
-            return;
-        }
-
-        vita += quantita;
-
-        if (vita > vitaMassima)
-        {
-            vita = vitaMassima;
+            effetti[i].Mostra();
         }
     }
-    public bool ConsumaMana(int quantita)
-    {
-        if (quantita <= 0 || !EInVita() || mana < quantita)
-        {
-            return false;
-        }
-        mana = mana - quantita;
-        return true;
-    }
-    public void RecuperaMana(int quantita)
-    {
-        if(quantita <= 0 || !EInVita())
-        {
-            return;
-        }
 
-        mana += quantita;
-
-        if(mana > manaMassimo)
-        {
-            mana = manaMassimo;
-        }
+    // STEP 26: riepilogo compatto, adatto alle schermate del combattimento.
+    public void MostraStatoBreve()
+    {
+        Console.WriteLine(nome + " | HP " + vita + "/" + vitaMassima +
+                          " | MP " + mana + "/" + manaMassimo);
     }
+
     public void Attacca(Personaggio bersaglio, Random casuale)
     {
-        if(!EInVita() || !bersaglio.EInVita())
+        if (!EInVita() || !bersaglio.EInVita())
         {
             return;
         }
+
         int potenza = attacco + ConsumaBonusFisico();
         EseguiAttacco(bersaglio, casuale, potenza);
     }
-    public bool AttaccaConAbilita(Personaggio bersaglio, Random casuale, string nomeAbilita, int costoMana, int bonusDanno, 
-        bool usaMagia,TipoEffetto tipoEffetto, int durataEffetto, int probabilitáEffetto)
+
+    public bool AttaccaConAbilita(Personaggio bersaglio, Random casuale,
+                                 string nomeAbilita, int costoMana,
+                                 int bonusDanno, bool usaMagia,
+                                 TipoEffetto tipoEffetto, int durataEffetto,
+                                 int probabilitaEffetto)
     {
         if (!EInVita() || !bersaglio.EInVita())
         {
@@ -131,9 +94,10 @@ abstract class Personaggio
 
         if (!ConsumaMana(costoMana))
         {
-            Console.WriteLine("Mana insufficiente: l'abilitá non viene lanciata");
+            Console.WriteLine("Mana insufficiente: l'abilita non viene utilizzata.");
             return false;
         }
+
         int potenza = attacco;
         if (usaMagia)
         {
@@ -145,14 +109,20 @@ abstract class Personaggio
         {
             potenza += ConsumaBonusFisico();
         }
+        Console.WriteLine(nome + " usa " + nomeAbilita + "! (-" + costoMana + " MP)");
         int danno = EseguiAttacco(bersaglio, casuale, potenza);
-        if( danno > 0 && bersaglio.EInVita() && tipoEffetto != TipoEffetto.Nessuno && casuale.Next(0,100) < probabilitáEffetto)
+
+        // Un effetto si applica soltanto se l'attacco fa danno e il bersaglio sopravvive.
+        if (danno > 0 && bersaglio.EInVita() && tipoEffetto != TipoEffetto.Nessuno &&
+            casuale.Next(0, 100) < probabilitaEffetto)
         {
             bersaglio.ApplicaEffetto(tipoEffetto, durataEffetto);
         }
-        Console.WriteLine($"{nome} usa {nomeAbilita} ! ( - {costoMana} MP )");
+
         return true;
     }
+
+    // Restituisce il danno realmente inflitto: 0 se l'attacco non colpisce.
     protected int EseguiAttacco(Personaggio bersaglio, Random casuale, int potenza)
     {
         if (!EInVita() || !bersaglio.EInVita())
@@ -161,7 +131,6 @@ abstract class Personaggio
         }
 
         int probabilitaSchivata = bersaglio.agilita;
-
         if (probabilitaSchivata < 0)
         {
             probabilitaSchivata = 0;
@@ -173,12 +142,12 @@ abstract class Personaggio
 
         if (casuale.Next(0, 100) < probabilitaSchivata)
         {
-            Console.WriteLine($"{bersaglio.nome} schiva l'attacco di {nome} !");
+            Console.WriteLine(bersaglio.nome + " schiva l'attacco di " + nome + "!");
+            // Una schivata non consuma la difesa attiva del bersaglio.
             return 0;
         }
 
         int probabilitaCritico = 5 + agilita;
-
         if (probabilitaCritico < 0)
         {
             probabilitaCritico = 0;
@@ -187,11 +156,9 @@ abstract class Personaggio
         {
             probabilitaCritico = 35;
         }
-
         bool critico = casuale.Next(0, 100) < probabilitaCritico;
 
         int danno = potenza - bersaglio.difesa - bersaglio.armatura;
-
         if (danno < 1)
         {
             danno = 1;
@@ -199,13 +166,12 @@ abstract class Personaggio
         if (critico)
         {
             danno *= 2;
-            Console.WriteLine($"Colpo CRITICO di {nome} , {danno}  danni inflitti!");
+            Console.WriteLine("COLPO CRITICO di " + nome + "!");
         }
 
         if (bersaglio.difesaAttiva)
         {
-            danno -= 5;
-
+            danno -= 4;
             if (danno < 0)
             {
                 danno = 0;
@@ -214,19 +180,11 @@ abstract class Personaggio
         }
 
         bersaglio.SubisciDanno(danno);
-        Console.WriteLine($"{nome} attacca {bersaglio.nome} e infligge {danno} danni");
+        Console.WriteLine(nome + " attacca " + bersaglio.nome +
+                          " e infligge " + danno + " danni calcolati.");
         return danno;
     }
-    public void Difenditi()
-    {
-        if (!EInVita())
-        {
-            return;
-        }
-        difesaAttiva = true;
-        Console.WriteLine($"{nome} si mette in difesa: danni minori al prossimo attacco");
 
-    }
     public void ApplicaEffetto(TipoEffetto tipo, int durata)
     {
         if (!EInVita() || tipo == TipoEffetto.Nessuno || durata <= 0)
@@ -234,25 +192,28 @@ abstract class Personaggio
             return;
         }
 
-        for(int i = 0; i < effetti.Count; i++)
+        for (int i = 0; i < effetti.Count; i++)
         {
             if (effetti[i].EDiTipo(tipo))
             {
                 effetti[i].Rinnova(durata);
-                Console.WriteLine($"Effetto {tipo} rinnovato");
+                Console.WriteLine("Effetto " + tipo + " rinnovato.");
                 return;
             }
         }
+
         effetti.Add(new EffettoStato(tipo, durata));
-        Console.WriteLine($"{nome} subisce l'effetto {tipo} per {durata} turni");
+        Console.WriteLine(nome + " subisce l'effetto " + tipo + " per " + durata + " turni!");
     }
+
+    // Gli effetti si applicano una sola volta per turno, prima della scelta dell'azione.
     public bool IniziaTurno()
     {
         bool saltaAzione = false;
 
-        for(int i = 0; i < effetti.Count; i++)
+        for (int i = effetti.Count - 1; i >= 0; i--)
         {
-            if(EInVita() && effetti[i].ApplicaAllInizioDelTurno(this))
+            if (EInVita() && effetti[i].ApplicaAllInizioTurno(this))
             {
                 saltaAzione = true;
             }
@@ -262,24 +223,31 @@ abstract class Personaggio
                 effetti.RemoveAt(i);
             }
         }
+
         return saltaAzione;
     }
+
     public void TerminaCombattimento()
     {
         effetti.Clear();
         difesaAttiva = false;
+        bonusFisicoTemporaneo = 0;
+        attacchiFisiciRimanenti = 0;
     }
+
     public bool PuoCurarsi()
     {
         return EInVita() && vita < vitaMassima;
     }
+
     public bool PuoRecuperareMana()
     {
         return EInVita() && mana < manaMassimo;
     }
+
     public bool AttivaBonusFisico(int bonus, int numeroAttacchi)
     {
-        if(!EInVita() || bonus <= 0 || numeroAttacchi <= 0 || attacchiFisiciRimanenti > 0)
+        if (!EInVita() || bonus <= 0 || numeroAttacchi <= 0 || attacchiFisiciRimanenti > 0)
         {
             return false;
         }
@@ -288,19 +256,89 @@ abstract class Personaggio
         attacchiFisiciRimanenti = numeroAttacchi;
         return true;
     }
+
     private int ConsumaBonusFisico()
     {
-        if(attacchiFisiciRimanenti <= 0)
+        if (attacchiFisiciRimanenti <= 0)
         {
             return 0;
         }
+
         int bonus = bonusFisicoTemporaneo;
         attacchiFisiciRimanenti--;
-        if(attacchiFisiciRimanenti == 0)
+        if (attacchiFisiciRimanenti == 0)
         {
             bonusFisicoTemporaneo = 0;
         }
         return bonus;
     }
 
+    public void Difenditi()
+    {
+        if (!EInVita())
+        {
+            return;
+        }
+
+        difesaAttiva = true;
+        Console.WriteLine(nome + " si mette in difesa: -4 danni dal prossimo attacco.");
+    }
+
+    public bool EInVita()
+    {
+        return vita > 0;
+    }
+
+    public void SubisciDanno(int danno)
+    {
+        if (danno <= 0)
+        {
+            return;
+        }
+
+        vita -= danno;
+        if (vita < 0)
+        {
+            vita = 0;
+        }
+    }
+
+    public void Cura(int quantita)
+    {
+        if (quantita <= 0 || !EInVita())
+        {
+            return;
+        }
+
+        vita += quantita;
+        if (vita > vitaMassima)
+        {
+            vita = vitaMassima;
+        }
+    }
+
+    public bool ConsumaMana(int quantita)
+    {
+        if (quantita <= 0 || !EInVita() || mana < quantita)
+        {
+            return false;
+        }
+
+        mana -= quantita;
+        return true;
+    }
+
+    public void RecuperaMana(int quantita)
+    {
+        if (quantita <= 0 || !EInVita())
+        {
+            return;
+        }
+
+        mana += quantita;
+        if (mana > manaMassimo)
+        {
+            mana = manaMassimo;
+        }
+    }
 }

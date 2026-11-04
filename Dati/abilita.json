@@ -1,0 +1,74 @@
+[
+  {
+    "Id": "g_colpo",
+    "Classe": "Guerriero",
+    "Nome": "Colpo Potente",
+    "CostoMana": 8,
+    "LivelloRichiesto": 1,
+    "BonusDanno": 8,
+    "Magica": false,
+    "Effetto": "Stordimento",
+    "DurataEffetto": 1,
+    "ProbabilitaEffetto": 35
+  },
+  {
+    "Id": "g_fendente",
+    "Classe": "Guerriero",
+    "Nome": "Fendente Eroico",
+    "CostoMana": 18,
+    "LivelloRichiesto": 3,
+    "BonusDanno": 14,
+    "Magica": false,
+    "Effetto": "Stordimento",
+    "DurataEffetto": 1,
+    "ProbabilitaEffetto": 50
+  },
+  {
+    "Id": "m_dardo",
+    "Classe": "Mago",
+    "Nome": "Dardo Arcano",
+    "CostoMana": 12,
+    "LivelloRichiesto": 1,
+    "BonusDanno": 8,
+    "Magica": true,
+    "Effetto": "Bruciatura",
+    "DurataEffetto": 2,
+    "ProbabilitaEffetto": 65
+  },
+  {
+    "Id": "m_esplosione",
+    "Classe": "Mago",
+    "Nome": "Esplosione Arcana",
+    "CostoMana": 20,
+    "LivelloRichiesto": 3,
+    "BonusDanno": 16,
+    "Magica": true,
+    "Effetto": "Bruciatura",
+    "DurataEffetto": 3,
+    "ProbabilitaEffetto": 75
+  },
+  {
+    "Id": "l_affondo",
+    "Classe": "Ladro",
+    "Nome": "Affondo Rapido",
+    "CostoMana": 10,
+    "LivelloRichiesto": 1,
+    "BonusDanno": 7,
+    "Magica": false,
+    "Effetto": "Veleno",
+    "DurataEffetto": 2,
+    "ProbabilitaEffetto": 75
+  },
+  {
+    "Id": "l_lama",
+    "Classe": "Ladro",
+    "Nome": "Lama Fantasma",
+    "CostoMana": 16,
+    "LivelloRichiesto": 3,
+    "BonusDanno": 13,
+    "Magica": false,
+    "Effetto": "Veleno",
+    "DurataEffetto": 3,
+    "ProbabilitaEffetto": 80
+  }
+]

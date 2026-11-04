@@ -1,7 +1,6 @@
-﻿enum TipoClasse
+enum TipoClasse
 {
     Guerriero,
     Mago,
     Ladro
 }
-

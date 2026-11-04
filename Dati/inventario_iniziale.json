@@ -1,0 +1,18 @@
+[
+  {
+    "OggettoId": "pozione_salute",
+    "Quantita": 2
+  },
+  {
+    "OggettoId": "pozione_mana",
+    "Quantita": 1
+  },
+  {
+    "OggettoId": "bomba_incendiaria",
+    "Quantita": 1
+  },
+  {
+    "OggettoId": "elisir_forza",
+    "Quantita": 1
+  }
+]
