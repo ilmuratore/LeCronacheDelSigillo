@@ -1,7 +1,8 @@
-﻿using System;
+using System;
+using System.IO;
 using System.Text.Json;
 
-class Programm
+class Program
 {
     static int Main(string[] args)
     {
@@ -12,11 +13,11 @@ class Programm
             new Gioco(catalogo).Avvia();
             return 0;
         }
-        catch (Exception ex) when (ex is IOException || ex is JsonException || ex is InvalidDataException || ex is UnauthorizedAccessException)
+        catch (Exception ex) when (ex is IOException || ex is JsonException ||
+                                   ex is InvalidDataException || ex is UnauthorizedAccessException)
         {
             Console.Error.WriteLine("Impossibile avviare il gioco: " + ex.Message);
             return 2;
         }
     }
-
 }
